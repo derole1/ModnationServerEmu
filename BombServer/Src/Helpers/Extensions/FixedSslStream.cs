@@ -11,6 +11,8 @@ using System.Reflection;
 
 namespace BombServerEmu_MNR.Src.Helpers.Extensions
 {
+    //All this just to make SSL close alerts work properly with SslStream D':
+
     public class FixedSslStream : SslStream
     {
         public FixedSslStream(Stream innerStream)

@@ -17,7 +17,8 @@ namespace BombServerEmu_MNR.Src
 
         static void Main(string[] args)
         {
-            Logging.RealLog(typeof(Program), "BombServerEmu_MNR  Copyright (C) 2021  derole\n" +
+            Logging.OpenLogFile();
+            Logging.RealLog(typeof(Program), "BombServer  Copyright (C) 2021  derole\n" +
                 "This program comes with ABSOLUTELY NO WARRANTY! This is free software, and you are welcome to redistribute it under certain conditions\n", LogType.Info);
             CheckArgs(args);
             //SetCipherSuite();
