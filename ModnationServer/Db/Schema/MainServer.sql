@@ -82,7 +82,7 @@ create table if not exists "player" (
 	"rating" integer,
 	"skill_level_id" integer,
 	"star_rating" integer,
-	"created_at" datetime default current_timestamp,
+	"created_at" datetime default current_timestamp
 );
 
 create table if not exists "player_profile" (
@@ -110,7 +110,7 @@ create table if not exists "player_profile" (
 	"im_icq" text,
 	"team_id" integer,
 	foreign key ("player_id") references player("player_id")
-	# TODO: team_id
+	-- TODO: team_id
 );
 
 create table if not exists "player_rating" (
@@ -178,14 +178,16 @@ create table if not exists "player_creation_rating" (
 	"player_id" integer not null,
 	"rating" integer not null,
 	"comments" text,
-	foreign key ("parent_creation_id") references player_creation("player_creation_id"),
+	foreign key ("player_creation_id") references player_creation("player_creation_id"),
 	foreign key ("player_id") references player("player_id")
 );
 
 create table if not exists "game" (
 	"game_id" integer not null primary key autoincrement,
-	"game_type" text check(game_type IN ("CHARACTER_CREATORS","KART_CREATORS","ONLINE_ACTION_RACE","ONLINE_HOT_SEAT_RACE","ONLINE_LKS_RACE","ONLINE_PURE_RACE","ONLINE_TIME_TRIAL_RACE","OVERALL","OVERALL_CREATORS","OVERALL_RACE","TRACK_CREATORS")) not null,
-	"game_state" text check(game_state IN ("ACTIVE","CANCELLED","CONCEDE","CONCEDE_ON","DISCONNECTED","DISCONNECTED_ON","DIVERGENCE","FINISHED","FORFEIT","FORFEIT_ON","FRIENDLY_QUIT","FRIENDLY_QUIT_ON","PENDING","PROCESSED","QUIT","QUIT_ON")) not null default "FINISHED",
+	"game_type" text check(game_type IN ("CHARACTER_CREATORS","KART_CREATORS","ONLINE_ACTION_RACE","ONLINE_HOT_SEAT_RACE","ONLINE_LKS_RACE","ONLINE_PURE_RACE"
+		,"ONLINE_TIME_TRIAL_RACE","OVERALL","OVERALL_CREATORS","OVERALL_RACE","TRACK_CREATORS")) not null,
+	"game_state" text check(game_state IN ("ACTIVE","CANCELLED","CONCEDE","CONCEDE_ON","DISCONNECTED","DISCONNECTED_ON","DIVERGENCE","FINISHED","FORFEIT"
+		,"FORFEIT_ON","FRIENDLY_QUIT","FRIENDLY_QUIT_ON","PENDING","PROCESSED","QUIT","QUIT_ON")) not null default "FINISHED",
 	"host_player_id" integer,
 	"platform" text check(platform IN ("PS2","PS3","PSP","WEB")) not null,
 	"name" text,
@@ -202,9 +204,10 @@ create table if not exists "game_player" (
 	"game_player_id" integer not null primary key autoincrement,
 	"player_id" integer,
 	"team_id" integer,
-	"game_state" text check(game_state IN ("ACTIVE","CANCELLED","CONCEDE","CONCEDE_ON","DISCONNECTED","DISCONNECTED_ON","DIVERGENCE","FINISHED","FORFEIT","FORFEIT_ON","FRIENDLY_QUIT","FRIENDLY_QUIT_ON","PENDING","PROCESSED","QUIT","QUIT_ON")) not null default "FINISHED",
-	foreign key ("host_player_id") references player("player_id")
-	# TODO: team_id
+	"game_state" text check(game_state IN ("ACTIVE","CANCELLED","CONCEDE","CONCEDE_ON","DISCONNECTED","DISCONNECTED_ON","DIVERGENCE","FINISHED","FORFEIT"
+		,"FORFEIT_ON","FRIENDLY_QUIT","FRIENDLY_QUIT_ON","PENDING","PROCESSED","QUIT","QUIT_ON")) not null default "FINISHED",
+	foreign key ("player_id") references player("player_id")
+	-- TODO: team_id
 );
 
 create table if not exists "game_player_stats" (
@@ -255,13 +258,14 @@ create table if not exists "achievement" (
 	"created_at" datetime not null default current_timestamp,
 	"updated_at" datetime,
 	foreign key ("player_id") references player("player_id"),
-	foreign key ("parent_creation_id") references player_creation("player_creation_id")
+	foreign key ("player_creation_id") references player_creation("player_creation_id")
 );
 
 create table if not exists "player_complaint" (
 	"player_complaint_id" integer not null primary key autoincrement,
 	"player_id" integer not null,
-	"player_complaint_reason" text check(player_complaint_reason IN ("COPYRIGHT","HARASS","ILLEGAL","MATURE","OFFENSIVE","OTHER","RACIAL","SEXUAL","TOS","VIOLENCE","VULGAR")) not null,
+	"player_complaint_reason" text check(player_complaint_reason IN ("COPYRIGHT","HARASS","ILLEGAL","MATURE","OFFENSIVE","OTHER","RACIAL","SEXUAL"
+		,"TOS","VIOLENCE","VULGAR")) not null,
 	"player_comments" text,
 	foreign key ("player_id") references player("player_id")
 );

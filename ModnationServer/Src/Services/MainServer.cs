@@ -8,6 +8,7 @@ using System.IO;
 using System.Diagnostics;
 
 using ModnationServer.Src.Log;
+using ModnationServer.Src.Helpers;
 
 namespace ModnationServer.Src.Services
 {
@@ -22,7 +23,7 @@ namespace ModnationServer.Src.Services
             try
             {
                 conStr = string.Format("Data Source={0};Version=3;", dbFile);
-                //TODO: Schema
+                Database.CheckDB(conStr, schemaFile);
                 listener.Prefixes.Add(domain);
                 listener.Start();
                 Logging.Log(typeof(MainServer), "Started MainServer on {0}", LogType.Info, domain);
