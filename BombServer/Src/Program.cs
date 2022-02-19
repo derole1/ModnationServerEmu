@@ -42,6 +42,7 @@ namespace BombServerEmu_MNR.Src
         {
             try
             {
+                Logging.Log(typeof(Program), System.IO.Path.GetFullPath("Certs\\output.pfx"), LogType.Debug);
                 if (!System.IO.File.Exists("Certs\\output.pfx"))
                 {
                     var proc = Process.Start("Scripts\\GenCert.bat");

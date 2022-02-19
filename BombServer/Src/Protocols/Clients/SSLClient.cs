@@ -13,6 +13,7 @@ using System.IO;
 
 using BombServerEmu_MNR.Src.Log;
 using BombServerEmu_MNR.Src.DataTypes;
+using BombServerEmu_MNR.Src.Helpers;
 using BombServerEmu_MNR.Src.Helpers.Extensions;
 
 namespace BombServerEmu_MNR.Src.Protocols.Clients
@@ -26,17 +27,23 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         TcpClient client;
         X509Certificate2 cert;
 
-        FixedSslStream stream;
+        UniversalNetworkStream stream;
 
-        public SSLClient(BombService service, TcpClient client, X509Certificate2 cert)
+        public SSLClient(BombService service, TcpClient client, X509Certificate2 cert = null)
         {
             this.service = service;
             this.client = client;
             this.cert = cert;
             //SetKeepAlive(5000);
+            if (cert == null)
+            {
+                stream = new UniversalNetworkStream(client.GetStream());
+                return;
+            }
             Logging.Log(typeof(SSLClient), "Attempting to get SSLStream...", LogType.Debug);
-            stream = new FixedSslStream(client.GetStream(), false);
-            stream.AuthenticateAsServer(cert, false, SslProtocols.Ssl3, false);
+            var sslStream = new FixedSslStream(client.GetStream(), false);
+            sslStream.AuthenticateAsServer(cert, false, SslProtocols.Ssl2 | SslProtocols.Ssl3 | SslProtocols.Tls, false);
+            stream = new UniversalNetworkStream(sslStream);
             Logging.Log(typeof(SSLClient), "SSLStream OK!", LogType.Debug);
         }
 
@@ -102,13 +109,13 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         byte[] ReadSocket()
         {
             byte[] headerBuf = new byte[4];
-            stream.Read(headerBuf, 0, headerBuf.Length);
+            stream.Read(ref headerBuf, 0, headerBuf.Length);
             int len = BitConverter.ToInt32(headerBuf, 0x00).SwapBytes();
             byte[] buf = new byte[len];
             int bytesRead = 0;
             do
             {
-                bytesRead += stream.Read(buf, bytesRead, buf.Length - bytesRead);
+                bytesRead += stream.Read(ref buf, bytesRead, buf.Length - bytesRead);
                 Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
             } while (bytesRead < len);
             return buf.Skip(20).ToArray();
@@ -128,7 +135,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             do
             {
                 int toWrite = Math.Min(1000, buf.Length - bytesWritten);
-                stream.Write(buf, bytesWritten, toWrite);
+                stream.Write(ref buf, bytesWritten, toWrite);
                 bytesWritten += toWrite;
                 Logging.Log(typeof(SSLClient), "Wrote {0}/{1} bytes", LogType.Debug, bytesWritten, buf.Length);
             } while (bytesWritten < buf.Length);
