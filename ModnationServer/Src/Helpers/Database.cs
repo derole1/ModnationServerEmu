@@ -10,6 +10,7 @@ using System.IO;
 
 namespace ModnationServer.Src.Helpers
 {
+    //TODO: Replace all this with my new and improved SQL database class that doesnt suck, please dont work with this!
     public struct ExternalReader
     {
         public SQLiteDataReader sqRead;
