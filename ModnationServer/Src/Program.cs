@@ -17,8 +17,8 @@ namespace ModnationServer.Src
             Logging.RealLog(typeof(Program), "ModnationServer  Copyright (C) 2021  derole\n" +
                 "This program comes with ABSOLUTELY NO WARRANTY! This is free software, and you are welcome to redistribute it under certain conditions\n", LogType.Info);
             CheckArgs(args);
-            new Thread(() => new MainServer("http://*:10050/", "Db\\MainServer.sqlite", "Db\\Schema\\MainServer.sql")).Start();
-            new Thread(() => new CDNServer("http://*:10050/cdn/", "Db\\Content\\")).Start();
+            var mainServer = new MainServer("192.168.1.46", 10050, "Db\\MainServer.sqlite", "Db\\Schema\\MainServer.sql");
+            //new Thread(() => new CDNServer("http://*:10050/cdn/", "Db\\Content\\")).Start();  //TODO
         }
 
         static void CheckArgs(string[] args)

@@ -39,7 +39,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             this.ip = ip;
             this.port = port;
             if (protocol == ProtocolType.TCP) {
-                sslListener = new SSL(this, ip, port);
+                sslListener = new SSL(this, ip, port, false);   //TEMP: For use with proxy
                 sslListener.SetCert(string.Format("Certs\\{0}", cert), pass);
                 sslListener.Start();
             } else {

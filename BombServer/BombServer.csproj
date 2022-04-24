@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>BombServerEmu_MNR</RootNamespace>
     <AssemblyName>BombServerEmu_MNR</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Scripts\GenCert.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
