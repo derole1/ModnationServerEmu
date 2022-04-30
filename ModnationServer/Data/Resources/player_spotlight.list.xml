@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="player_spotlight.list" login_required="true">
+  <request method="GET" url="player_spotlight.list.xml">
+    <param name="player_spotlight_type" type="string" options="DAILY,MONTHLY,WEEKLY" required="true"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="player_spotlights" type="anchor">
+      <attribute name="total" type="integer"/>
+      <vector name="player_spotlight" type="anchor">
+        <attribute name="character_idx" type="integer"/>
+        <attribute name="id" type="integer"/>
+        <attribute name="kart_idx" type="integer"/>
+        <attribute name="player_id" type="integer"/>
+        <attribute name="player_spotlight_type" type="string"/>
+        <attribute name="rating" type="float"/>
+        <attribute name="track_idx" type="integer"/>
+        <attribute name="username" type="string"/>
+      </vector>
+    </element>
+  </response>
+</resource>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="policy.view">
+  <request method="GET" url="policy.view.xml">
+    <param name="policy_type" type="string" default="EULA" options="EULA,PRIVACY" required="true"/>
+    <param name="platform" type="string" default="[session]" options="PS2,PS3,PSP,WEB" required="true"/>
+    <param name="username" type="string" default="[session]" required="true"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="policy" type="string">
+      <attribute name="id" type="integer"/>
+      <attribute name="is_accepted" type="boolean"/>
+      <attribute name="name" type="string"/>
+    </element>
+  </response>
+</resource>

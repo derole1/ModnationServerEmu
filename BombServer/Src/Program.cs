@@ -27,25 +27,25 @@ namespace BombServerEmu_MNR.Src
                 Console.ReadKey();
                 return;
             }
-            //services.Add(new Directory("192.168.1.46", 10501).service);
+            services.Add(new Directory("192.168.1.196", 10501).service);
 
-            //services.Add(new Matchmaking("192.168.1.46", 10510).service);
-            //services.Add(new GameManager("192.168.1.46", 10511).service);
-            //services.Add(new GameBrowser("192.168.1.46", 10512).service);
+            services.Add(new Matchmaking("192.168.1.196", 10510).service);
+            services.Add(new GameManager("192.168.1.196", 10511).service);
+            services.Add(new GameBrowser("192.168.1.196", 10512).service);
 
-            //services.Add(new TextComm("192.168.1.46", 10513).service);
-            //services.Add(new PlayGroup("192.168.1.46", 10514).service);
-            //services.Add(new Stats("192.168.1.46", 10515).service);
+            services.Add(new TextComm("192.168.1.196", 10513).service);
+            services.Add(new PlayGroup("192.168.1.196", 10514).service);
+            services.Add(new Stats("192.168.1.196", 10515).service);
 
-            services.Add(new Directory("192.168.1.46", 11501).service);
+            //services.Add(new Directory("192.168.1.196", 11501).service);
 
-            services.Add(new Matchmaking("192.168.1.46", 11510).service);
-            services.Add(new GameManager("192.168.1.46", 11511).service);
-            services.Add(new GameBrowser("192.168.1.46", 11512).service);
+            //services.Add(new Matchmaking("192.168.1.196", 11510).service);
+            //services.Add(new GameManager("192.168.1.196", 11511).service);
+            //services.Add(new GameBrowser("192.168.1.196", 11512).service);
 
-            services.Add(new TextComm("192.168.1.46", 11513).service);
-            services.Add(new PlayGroup("192.168.1.46", 11514).service);
-            services.Add(new Stats("192.168.1.46", 11515).service);
+            //services.Add(new TextComm("192.168.1.196", 11513).service);
+            //services.Add(new PlayGroup("192.168.1.196", 11514).service);
+            //services.Add(new Stats("192.168.1.196", 11515).service);
         }
 
         static bool CheckCerts()

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource name="player_profile.update" login_required="true">
+  <request method="PUT" url="player_profile.update.xml">
+    <param name="player_profile[first_name]" type="string" maxlength="30" />
+    <param name="player_profile[middle_name]" type="string" maxlength="30" />
+    <param name="player_profile[last_name]" type="string" maxlength="30" />
+    <param name="player_profile[addr_line1]" type="string" maxlength="50" />
+    <param name="player_profile[addr_line2]" type="string" maxlength="50" />
+    <param name="player_profile[addr_line3]" type="string" maxlength="50" />
+    <param name="player_profile[city]" type="string" maxlength="50" />
+    <param name="player_profile[state]" type="string" maxlength="2" />
+    <param name="player_profile[postal_code]" type="string" maxlength="10" />
+    <param name="player_profile[province]" type="string" maxlength="50" />
+    <param name="player_profile[country]" type="string" maxlength="50" />
+    <param name="player_profile[birthdate]" type="datetime" />
+    <param name="player_profile[email]" type="string" maxlength="200" />
+    <param name="player_profile[email_confirmation]" type="string" maxlength="200" />
+    <param name="player_profile[cell_phone]" type="string" maxlength="20" />
+    <param name="player_profile[quote]" type="string" maxlength="400" />
+    <param name="player_profile[im_yahoo]" type="string" maxlength="33" />
+    <param name="player_profile[im_aol]" type="string" maxlength="16" />
+    <param name="player_profile[im_msn]" type="string" maxlength="200" />
+    <param name="player_profile[im_icq]" type="string" maxlength="200" />
+    <param name="player_profile[team_id]" type="integer" />
+  </request>
+</resource>

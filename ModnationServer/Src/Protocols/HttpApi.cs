@@ -6,6 +6,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 using HttpLib;
@@ -70,6 +71,13 @@ namespace ModnationServer.Src.Protocols
                 var request = stream.Read();
                 var response = new HttpResponse();
                 response.Headers["server"] = string.Format(@"{0}/1.0", ServiceName);
+                response.Headers.Add("Content-Type", "application/xml; charset=utf-8");
+                response.Headers.Add("Connection", "close");
+                if (request.ContainsHeader("Cookie"))
+                {
+                    var header = request.GetHeader("Cookie");
+                    response.Headers.Add("Cookie", header);
+                }
                 Logging.Log(typeof(HttpApi), "[{0}] IP: {1}", LogType.Debug, ServiceName, ((IPEndPoint)client.Client.RemoteEndPoint).Address);
                 Logging.Log(typeof(HttpApi), "[{0}] {1} {2}", LogType.Info, ServiceName, request.RequestMethod, request.Uri);
                 if (methods.ContainsKey(request.Uri))
@@ -81,6 +89,7 @@ namespace ModnationServer.Src.Protocols
                     Logging.Log(typeof(HttpApi), "Method does not exist!", LogType.Error);
                     response.StatusCode = new HttpLib.HttpStatusCode(HttpLib.HttpStatusCode.StatusCode.NotFound);
                 }
+                response.Headers.Add("ETag", "\"" + BitConverter.ToString(MD5.Create().ComputeHash(response.Data)).Replace("-", "").ToLower() + "\"");
                 stream.Write(response);
             }
             catch (Exception e)
@@ -88,6 +97,23 @@ namespace ModnationServer.Src.Protocols
                 Logging.Log(typeof(HttpApi), e.ToString(), LogType.Error);
             }
             client.Close();
+        }
+
+        public static Dictionary<string, string> DecodeUriParameters(byte[] data, Encoding enc) => DecodeUriParameters(enc.GetString(data));
+
+        public static Dictionary<string, string> DecodeUriParameters(string data)
+        {
+
+            var uriParameters = new Dictionary<string, string>();
+            if (data.Length > 1)
+            {
+                foreach (var param in data.Split('&'))
+                {
+                    var paramPair = param.Split('=');
+                    uriParameters.Add(System.Web.HttpUtility.UrlDecode(paramPair[0]), paramPair.Length > 1 ? System.Web.HttpUtility.UrlDecode(paramPair[1]) : null);
+                }
+            }
+            return uriParameters;
         }
     }
 }

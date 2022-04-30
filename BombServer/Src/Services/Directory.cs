@@ -36,18 +36,23 @@ namespace BombServerEmu_MNR.Src.Services
                     bw.Write(name.Length.SwapBytes());
                     bw.Write(Encoding.ASCII.GetBytes(name));
                     bw.Write(1.SwapBytes());    //Number of servers
+
                     string ip = s.ip.AddNullTerminator();
                     bw.Write(ip.Length.SwapBytes());
                     bw.Write(Encoding.ASCII.GetBytes(ip));
-                    bw.Write(0.SwapBytes());
+
+                    bw.Write(0.SwapBytes());  //Some string goes here?
+                    //bw.Write(Encoding.ASCII.GetBytes("TEST"));
+
                     string port = s.port.ToString().AddNullTerminator();
                     bw.Write(port.Length.SwapBytes());
                     bw.Write(Encoding.ASCII.GetBytes(port));
+
                     string serviceProtocol = (s.protocol == ProtocolType.TCP ? "TCP" : "RUDP").AddNullTerminator();
                     bw.Write(serviceProtocol.Length.SwapBytes());
                     bw.Write(Encoding.ASCII.GetBytes(serviceProtocol));
                     //(s.name == "gamemanager" ? 1 : 0)
-                    bw.Write(0.SwapBytes());    //???
+                    bw.Write(0.SwapBytes());    //Doesnt seem to affect anything
                     bw.Write(i.SwapBytes());    //SessionKey
                 }
                 i++;

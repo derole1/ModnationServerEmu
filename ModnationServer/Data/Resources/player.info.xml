@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource name="player.info" login_required="true">
+  <request method="GET" url="player.info.xml">
+    <param name="id" type="integer" minvalue="1" required="true" />
+    <param name="platform" type="string" default="[session]" options="PS2,PS3,PSP,WEB" />
+  </request>
+  <response name="response" type="anchor">
+    <element name="player" type="anchor">
+      <attribute name="city" type="string"/>
+      <attribute name="country" type="string"/>
+      <attribute name="created_at" type="datetime"/>
+      <attribute name="creator_points" type="string"/>
+      <attribute name="creator_points_last_week" type="string"/>
+      <attribute name="creator_points_this_week" type="string"/>
+      <attribute name="experience_points" type="string"/>
+      <attribute name="experience_points_last_week" type="string"/>
+      <attribute name="experience_points_this_week" type="string"/>
+      <attribute name="longest_drift" type="string"/>
+      <attribute name="longest_hang_time" type="datetime"/>
+      <attribute name="longest_win_streak" type="string"/>
+      <attribute name="online_disconnected" type="string"/>
+      <attribute name="online_finished" type="string"/>
+      <attribute name="online_finished_last_week" type="string"/>
+      <attribute name="online_finished_this_week" type="string"/>
+      <attribute name="online_forfeit" type="string"/>
+      <attribute name="online_races" type="string"/>
+      <attribute name="online_races_last_week" type="string"/>
+      <attribute name="online_races_this_week" type="string"/>
+      <attribute name="online_wins" type="string"/>
+      <attribute name="online_wins_last_week" type="string"/>
+      <attribute name="online_wins_this_week" type="string"/>
+      <attribute name="player_creation_quota" type="string"/>
+      <attribute name="player_id" type="integer"/>
+      <attribute name="points" type="integer"/>
+      <attribute name="presence" type="string"/>
+      <attribute name="province" type="string"/>
+      <attribute name="quote" type="string"/>
+      <attribute name="rank" type="integer"/>
+      <attribute name="rating" type="integer"/>
+      <attribute name="skill_level" type="string"/>
+      <attribute name="skill_level_id" type="integer"/>
+      <attribute name="skill_level_name" type="string"/>
+      <attribute name="star_rating" type="string"/>
+      <attribute name="state" type="string"/>
+      <attribute name="total_characters" type="integer"/>
+      <attribute name="total_karts" type="integer"/>
+      <attribute name="total_player_creations" type="integer"/>
+      <attribute name="total_tracks" type="integer"/>
+      <attribute name="username" type="string"/>
+      <attribute name="win_streak" type="string"/>
+    </element>
+  </response>
+</resource>

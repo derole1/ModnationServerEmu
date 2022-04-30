@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource name="player_creation_rating.view" login_required="true">
+  <request method="GET" url="player_creation_rating.view.xml">
+    <param name="player_id" type="integer" default="[session]" minvalue="1" />
+    <param name="player_creation_id" type="integer" minvalue="10000" required="true" />
+  </request>
+  <response name="response" type="anchor">
+    <element name="player_creation_rating" type="anchor">
+      <attribute name="comments" type="string"/>
+      <attribute name="rating" type="integer"/>
+    </element>
+  </response>
+</resource>

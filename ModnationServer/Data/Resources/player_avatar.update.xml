@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="player_avatar.update" login_required="true">
+  <request method="PUT" url="player_avatar.update.xml" content_type="multipart/form-data">
+    <param name="player_avatar[avatar]" type="file" required="true"/>
+    <param name="player_avatar[player_avatar_type]" type="string" default="PRIMARY" options="PRIMARY,SECONDARY" required="true"/>
+  </request>
+</resource>

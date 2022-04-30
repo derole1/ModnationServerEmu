@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="player.to_id" login_required="true">
+  <request method="GET" url="player.to_id.xml">
+    <param name="username" type="string" required="true"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="player_id" type="integer"/>
+  </response>
+</resource>

@@ -126,6 +126,8 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             var bw = new BinaryWriter(new MemoryStream());
             bw.Write((data.Length+21).SwapBytes());
             bw.Write(new byte[16]);
+            //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
+            //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             bw.Write(0x64FEFFFF.SwapBytes());    //Protocol type (TCP=0x64FEFFFF)
             bw.Write(data);
             bw.Write((byte)0);
@@ -134,7 +136,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             int bytesWritten = 0;
             do
             {
-                int toWrite = Math.Min(1000, buf.Length - bytesWritten);
+                int toWrite = Math.Min(1024, buf.Length - bytesWritten);
                 stream.Write(ref buf, bytesWritten, toWrite);
                 bytesWritten += toWrite;
                 Logging.Log(typeof(SSLClient), "Wrote {0}/{1} bytes", LogType.Debug, bytesWritten, buf.Length);

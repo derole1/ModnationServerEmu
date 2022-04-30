@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="session.ping" login_required="true">
+  <request method="POST" url="session.ping.xml"/>
+</resource>

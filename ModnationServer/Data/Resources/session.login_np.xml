@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="session.login_np">
+  <request method="POST" url="session.login_np.xml">
+    <param name="platform" type="string" options="PS2,PS3,PSP,WEB" required="true"/>
+    <param name="ticket" type="binary" encoding="base64" required="true"/>
+    <param name="hmac" type="string" encryption="md5" required="true" salt="true"/>
+    <param name="console_id" type="string" required="true"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="login_data" type="anchor">
+      <attribute name="ip_address" type="string"/>
+      <attribute name="login_time" type="datetime"/>
+      <attribute name="platform" type="string"/>
+      <attribute name="player_id" type="integer"/>
+      <attribute name="player_name" type="string"/>
+      <attribute name="presence" type="string"/>
+    </element>
+  </response>
+</resource>

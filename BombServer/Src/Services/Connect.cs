@@ -27,7 +27,7 @@ namespace BombServerEmu_MNR.Src.Services
                 xml.AddParam("bombd_OS", "0");
                 //xml.AddParam("bombd_ServerIP", service.ip);
                 //xml.AddParam("bombd_ServerPort", service.port);
-                xml.AddParam("serveruuid", "0");
+                xml.AddParam("serveruuid", "1");
                 xml.AddParam("userid", "2059179");
                 xml.AddParam("username", "Jonopiel");
             }

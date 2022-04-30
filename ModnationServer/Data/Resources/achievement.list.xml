@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="achievement.list" login_required="true">
+  <request method="GET" url="achievement.list.xml">
+    <param name="page" type="integer" required="false" default="1" minvalue="0" maxvalue="1000"/>
+    <param name="per_page" type="integer" required="false" default="10" minvalue="1" maxvalue="50"/>
+    <param name="limit" type="integer" required="false" default="20" minvalue="0" maxvalue="1000"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="achievements" type="anchor">
+      <attribute name="total" type="integer"/>
+      <vector name="achievement" type="anchor">
+        <attribute name="achievement_type_id" type="integer"/>
+        <attribute name="created_at" type="datetime"/>
+        <attribute name="has_read" type="boolean"/>
+        <attribute name="id" type="integer"/>
+        <attribute name="player_creation_id" type="integer"/>
+        <attribute name="player_creation_name" type="string"/>
+        <attribute name="player_id" type="integer"/>
+        <attribute name="relevant" type="boolean"/>
+        <attribute name="updated_at" type="datetime"/>
+        <attribute name="value" type="integer"/>
+      </vector>
+    </element>
+  </response>
+</resource>

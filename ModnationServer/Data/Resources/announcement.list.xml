@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="announcement.list" login_required="true">
+  <request method="GET" url="announcement.list.xml">
+    <param name="platform" type="string" default="[session]"/>
+  </request>
+  <response name="response" type="anchor">
+    <element name="announcements" type="anchor">
+      <attribute name="total" type="integer"/>
+      <vector name="announcement" type="string">
+        <attribute name="id" type="integer"/>
+        <attribute name="subject" type="string"/>
+        <attribute name="language_code" type="string"/>
+        <attribute name="created_at" type="datetime"/>
+        <attribute name="modified_at" type="datetime"/>
+      </vector>
+    </element>
+  </response>
+</resource>

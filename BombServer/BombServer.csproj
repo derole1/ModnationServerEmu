@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\DataTypes\BombService.cs" />
+    <Compile Include="Src\DataTypes\BombServiceList.cs" />
     <Compile Include="Src\DataTypes\BombXml.cs" />
     <Compile Include="Src\Helpers\Extensions\Endian.cs" />
     <Compile Include="Src\Helpers\Extensions\FixedSslStream.cs" />
