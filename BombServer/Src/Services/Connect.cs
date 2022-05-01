@@ -24,12 +24,15 @@ namespace BombServerEmu_MNR.Src.Services
                 xml.AddParam("bombd_version", "3.2.8");
                 xml.AddParam("bombd_builddate", "3/29/2010 4:52:54 PM");
                 xml.AddParam("bombd_revision", "1733");
-                xml.AddParam("bombd_OS", "0");
+                xml.AddParam("bombd_OS", "1");
                 //xml.AddParam("bombd_ServerIP", service.ip);
                 //xml.AddParam("bombd_ServerPort", service.port);
-                xml.AddParam("serveruuid", "1");
-                xml.AddParam("userid", "2059179");
+                xml.AddParam("serveruuid", "9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
                 xml.AddParam("username", "Jonopiel");
+                xml.AddParam("userid", "2059179");
+                //TODO: Select if we should send this depending on BombService
+                xml.AddParam("MMConfigFile", Convert.ToBase64String(new byte[1024]));
+                xml.AddParam("MMConfigFileSize", "1024");
             }
             client.SendXmlData(xml);
         }

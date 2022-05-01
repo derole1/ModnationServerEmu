@@ -36,6 +36,13 @@ namespace BombServerEmu_MNR.Src.Services
             service.RegisterMethod("kickPlayer", null);
         }
 
+        void CreateGameHandler(BombService service, SSLClient client, BombXml xml)
+        {
+            //gamename,internalIP,externalIP,listenPort
+            //xml.SetMethod("createGame");
+            //client.SendXmlData(xml);
+        }
+
         void LeaveCurrentGameHandler(BombService service, SSLClient client, BombXml xml)
         {
             xml.SetMethod("leaveCurrentGame");

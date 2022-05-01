@@ -106,6 +106,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Close();
         }
 
+        int x = 0;
         byte[] ReadSocket()
         {
             byte[] headerBuf = new byte[4];
@@ -118,9 +119,14 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
                 bytesRead += stream.Read(ref buf, bytesRead, buf.Length - bytesRead);
                 Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
             } while (bytesRead < len);
+
+            File.WriteAllBytes(string.Format("reqHeader{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf.Take(20)).ToArray());
+            x++;
+
             return buf.Skip(20).ToArray();
         }
 
+        int i = 0;
         void WriteSocket(byte[] data)
         {
             var bw = new BinaryWriter(new MemoryStream());
@@ -129,6 +135,10 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             bw.Write(0x64FEFFFF.SwapBytes());    //Protocol type (TCP=0x64FEFFFF)
+
+            File.WriteAllBytes(string.Format("resHeader{0}_{1}.bin", i, GetHashCode()), ((MemoryStream)bw.BaseStream).ToArray());
+            i++;
+
             bw.Write(data);
             bw.Write((byte)0);
             byte[] buf = ((MemoryStream)bw.BaseStream).ToArray();

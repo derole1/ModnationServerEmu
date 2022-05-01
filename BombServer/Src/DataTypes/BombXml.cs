@@ -67,6 +67,11 @@ namespace BombServerEmu_MNR.Src.DataTypes
             ((XmlElement)resDoc.SelectSingleNode("service/transaction/method")).InnerText = string.Format(" {0} ", method);
         }
 
+        public void SetError(string error)
+        {
+            CreateXmlElement(ref resDoc, ((XmlElement)resDoc.SelectSingleNode("service/transaction/method")), "error", string.Format(" {0} ", error));
+        }
+
         public string GetParam(string name)
         {
             var paramNode = ((XmlElement)reqDoc.SelectSingleNode(string.Format("service/transaction[name='{0}'][1]", name)));

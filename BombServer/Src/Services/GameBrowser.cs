@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using BombServerEmu_MNR.Src.Protocols.Clients;
 using BombServerEmu_MNR.Src.DataTypes;
@@ -22,8 +23,21 @@ namespace BombServerEmu_MNR.Src.Services
 
             service.RegisterMethod("subscribeGameEvents", null);
             service.RegisterMethod("unSubscribeGameEvents", UnSubscribeGameEventsHandler);
-            service.RegisterMethod("listGames", null);
+            service.RegisterMethod("listGames", ListGamesHandler);
             service.RegisterMethod("listFakeGames", null);
+        }
+
+        void ListGamesHandler(BombService service, SSLClient client, BombXml xml)
+        {
+            xml.SetMethod("serverGameList");
+            var bw = new BinaryWriter(new MemoryStream());
+            bw.Write(1);
+            bw.Write(new byte[124]);
+            xml.AddParam("serverGameListHeader", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
+            xml.AddParam("serverGameList", Convert.ToBase64String(new byte[1024]));
+            xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));
+            //xml.SetError("noGamesAvailable");
+            client.SendXmlData(xml);
         }
 
         void UnSubscribeGameEventsHandler(BombService service, SSLClient client, BombXml xml)

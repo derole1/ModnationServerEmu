@@ -41,8 +41,9 @@ namespace BombServerEmu_MNR.Src.Services
                     bw.Write(ip.Length.SwapBytes());
                     bw.Write(Encoding.ASCII.GetBytes(ip));
 
-                    bw.Write(0.SwapBytes());  //Some string goes here?
-                    //bw.Write(Encoding.ASCII.GetBytes("TEST"));
+                    var uuid = Encoding.ASCII.GetBytes("9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
+                    bw.Write(uuid.Length.SwapBytes());  //Some string goes here?
+                    bw.Write(uuid);
 
                     string port = s.port.ToString().AddNullTerminator();
                     bw.Write(port.Length.SwapBytes());
