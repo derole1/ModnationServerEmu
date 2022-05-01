@@ -29,14 +29,18 @@ namespace BombServerEmu_MNR.Src.Services
 
         void ListGamesHandler(BombService service, SSLClient client, BombXml xml)
         {
+            var attributes = new BombAttributeList(Convert.FromBase64String(xml.GetParam("attributeList")));
+
             xml.SetMethod("serverGameList");
             var bw = new BinaryWriter(new MemoryStream());
             bw.Write(1);
             bw.Write(new byte[124]);
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
-            xml.AddParam("serverGameList", Convert.ToBase64String(new byte[1024]));
+            var gameList = new BombAttributeList();
+            //TODO: What goes here, and are the markers used in the above class even accurate?
+            xml.AddParam("serverGameList", Convert.ToBase64String(new byte[1024])); //This uses BombAttributeList, but maybe with slightly different markers?
             xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));
-            //xml.SetError("noGamesAvailable");
+           // xml.SetError("noGamesAvailable");
             client.SendXmlData(xml);
         }
 

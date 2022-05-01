@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\DataTypes\BombAttributeList.cs" />
     <Compile Include="Src\DataTypes\BombService.cs" />
     <Compile Include="Src\DataTypes\BombServiceList.cs" />
     <Compile Include="Src\DataTypes\BombXml.cs" />

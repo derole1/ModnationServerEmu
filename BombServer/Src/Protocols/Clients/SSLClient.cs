@@ -120,7 +120,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
                 Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
             } while (bytesRead < len);
 
-            File.WriteAllBytes(string.Format("reqHeader{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf.Take(20)).ToArray());
+            File.WriteAllBytes(string.Format("req{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf).ToArray());
             x++;
 
             return buf.Skip(20).ToArray();
@@ -135,13 +135,13 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             bw.Write(0x64FEFFFF.SwapBytes());    //Protocol type (TCP=0x64FEFFFF)
-
-            File.WriteAllBytes(string.Format("resHeader{0}_{1}.bin", i, GetHashCode()), ((MemoryStream)bw.BaseStream).ToArray());
-            i++;
-
             bw.Write(data);
             bw.Write((byte)0);
             byte[] buf = ((MemoryStream)bw.BaseStream).ToArray();
+
+            File.WriteAllBytes(string.Format("res{0}_{1}.bin", i, GetHashCode()), buf);
+            i++;
+
             //File.WriteAllBytes("debug.bin", buf);
             int bytesWritten = 0;
             do
