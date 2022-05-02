@@ -1,0 +1,22 @@
+<MatchSizeDecaySetting>
+	<param>
+		<name> type </name>
+		<value> 0 </value>
+	</param>
+	<param>
+		<name> seconds </name>
+		<value> 10 </value>
+	</param>
+	<param>
+		<name> matchsize </name>
+		<value> 10 </value>
+	</param>
+	<param>
+		<name> maxmatchsize </name>
+		<value> 10 </value>
+	</param>
+	<param>
+		<name> default </name>
+		<value> true </value>
+	</param>
+</MatchSizeDecaySetting>

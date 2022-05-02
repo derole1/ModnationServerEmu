@@ -72,6 +72,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             CreateXmlElement(ref resDoc, ((XmlElement)resDoc.SelectSingleNode("service/transaction/method")), "error", string.Format(" {0} ", error));
         }
 
+        //TODO: Fix this
         public string GetParam(string name)
         {
             var paramNode = ((XmlElement)reqDoc.SelectSingleNode(string.Format("service/transaction[name='{0}'][1]", name)));

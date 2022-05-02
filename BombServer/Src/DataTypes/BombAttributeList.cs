@@ -44,6 +44,8 @@ namespace BombServerEmu_MNR.Src.DataTypes
                     if (i < Count)
                     {
                         var entry = this.ElementAt(i);
+                        //TODO: This could be exploited to perform buffer overflows, leave a note here so I dont forget to fix it before release!
+                        //      Considering user input doesnt get passed here (yet), we should be safe for now
                         bw.Write(Encoding.ASCII.GetBytes(entry.Key.PadRight(0x20, '\0')));
                         bw.Write(Encoding.ASCII.GetBytes(entry.Value.PadRight(0x20, '\0')));
                     }

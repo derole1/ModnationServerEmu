@@ -40,7 +40,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             this.port = port;
             if (protocol == ProtocolType.TCP) {
                 sslListener = new SSL(this, ip, port);
-                sslListener.SetCert(string.Format("Certs\\{0}", cert), pass);
+                sslListener.SetCert(string.Format(@"Data\Certs\{0}", cert), pass);
                 sslListener.Start();
             } else {
                 rudpListener = new RUDP(this, ip, port);

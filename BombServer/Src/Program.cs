@@ -52,15 +52,15 @@ namespace BombServerEmu_MNR.Src
         {
             try
             {
-                Logging.Log(typeof(Program), System.IO.Path.GetFullPath("Certs\\output.pfx"), LogType.Debug);
-                if (!System.IO.File.Exists("Certs\\output.pfx"))
+                Logging.Log(typeof(Program), System.IO.Path.GetFullPath(@"Certs\output.pfx"), LogType.Debug);
+                if (!System.IO.File.Exists(@"Data\Certs\output.pfx"))
                 {
-                    var proc = Process.Start("Scripts\\GenCert.bat");
+                    var proc = Process.Start(@"Data\Scripts\GenCert.bat");
                     proc.WaitForExit();
-                    if (System.IO.File.Exists("C:\\Program Files\\OpenSSL-Win64\\bin\\certs\\output.pfx"))
+                    if (System.IO.File.Exists(@"C:\Program Files\OpenSSL-Win64\bin\certs\output.pfx"))
                     {
-                        System.IO.File.Move("C:\\Program Files\\OpenSSL-Win64\\bin\\certs\\output.pfx", "Certs\\output.pfx");
-                        System.IO.Directory.Delete("C:\\Program Files\\OpenSSL-Win64\\bin\\certs", true);
+                        System.IO.File.Move(@"C:\Program Files\OpenSSL-Win64\bin\certs\output.pfx", @"Data\Certs\output.pfx");
+                        System.IO.Directory.Delete(@"C:\Program Files\OpenSSL-Win64\bin\certs", true);
                         return true;
                     }
                     return false;
@@ -71,7 +71,7 @@ namespace BombServerEmu_MNR.Src
 
         static void SetCipherSuite()
         {
-            var proc = Process.Start("PowerShell", string.Format("\"{0}\"", System.IO.Path.GetFullPath("Scripts\\SetCipherSuite.ps1")));
+            var proc = Process.Start("PowerShell", string.Format("\"{0}\"", System.IO.Path.GetFullPath(@"Data\Scripts\SetCipherSuite.ps1")));
             proc.WaitForExit();
         }
 

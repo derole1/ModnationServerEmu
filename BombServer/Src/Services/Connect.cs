@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using BombServerEmu_MNR.Src.Log;
 using BombServerEmu_MNR.Src.DataTypes;
@@ -31,8 +32,12 @@ namespace BombServerEmu_MNR.Src.Services
                 xml.AddParam("username", "Jonopiel");
                 xml.AddParam("userid", "2059179");
                 //TODO: Select if we should send this depending on BombService
-                xml.AddParam("MMConfigFile", Convert.ToBase64String(new byte[1024]));
-                xml.AddParam("MMConfigFileSize", "1024");
+                if (service.name == "matchmaking")
+                {
+                    var config = File.ReadAllBytes(@"Data\Resources\MMConfig.xml");
+                    xml.AddParam("MMConfigFile", Convert.ToBase64String(config));
+                    xml.AddParam("MMConfigFileSize", config.Length);
+                }
             }
             client.SendXmlData(xml);
         }

@@ -74,15 +74,18 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Scripts\GenCert.bat">
+    <None Include="Data\Scripts\GenCert.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\SetCipherSuite.ps1">
+    <None Include="Data\Scripts\SetCipherSuite.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Certs\info.txt" />
+    <Content Include="Data\Certs\info.txt" />
+    <Content Include="Data\Resources\MMConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
