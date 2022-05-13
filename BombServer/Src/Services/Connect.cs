@@ -31,13 +31,18 @@ namespace BombServerEmu_MNR.Src.Services
                 xml.AddParam("serveruuid", "9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
                 xml.AddParam("username", "Jonopiel");
                 xml.AddParam("userid", "2059179");
-                //TODO: Select if we should send this depending on BombService
-                if (service.name == "matchmaking")
-                {
+                // In the packet logs, this is the service that gets a config (a fairly large one that is, likely >1024 bytes)
+                // Its still unknown what type of config is sent, there seems to be multiple config types, the type is decided by the root node? (Need to verify how the XML works first)
+                // The config in MMConfig.xml is a rough guess, it crashes the game right now though, reason is unknown, the IDA decomp is a mess :(
+                // I am 100% certain it is XML, the same functions used in BombXml decoding are used here
+                //if (service.name == "matchmaking")
+                //{
                     var config = File.ReadAllBytes(@"Data\Resources\MMConfig.xml");
                     xml.AddParam("MMConfigFile", Convert.ToBase64String(config));
                     xml.AddParam("MMConfigFileSize", config.Length);
-                }
+                //}
+                //xml.AddParam("MMConfigFile", Convert.ToBase64String(new byte[1024]));
+                //xml.AddParam("MMConfigFileSize", "1024");
             }
             client.SendXmlData(xml);
         }
