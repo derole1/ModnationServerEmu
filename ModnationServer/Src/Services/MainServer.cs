@@ -41,6 +41,10 @@ namespace ModnationServer.Src.Services
             Api.RegisterMethod("/resources/content_url.list.xml", Resources.GetResourceHandler);
 
             Api.RegisterMethod("/resources/server.select.xml", Resources.GetResourceHandler);
+
+            //Api.RegisterMethod("/resources/leaderboard.view.xml", Resources.GetResourceHandler);
+
+            //Api.RegisterMethod("/resources/player_creation.list.xml", Resources.GetResourceHandler);
             //Methods
             Api.RegisterMethod("/preferences.xml", Preferences.PreferencesHandler);
 
@@ -55,6 +59,10 @@ namespace ModnationServer.Src.Services
             Api.RegisterMethod("/content_url.list.xml", ContentUrl.ContentUrlListHandler);
 
             Api.RegisterMethod("/server.select.xml", Server.ServerSelectHandler);
+
+            //Api.RegisterMethod("/leaderboards/view.xml", Leaderboard.LeaderboardViewHandler);
+
+            //Api.RegisterMethod("/player_creations.xml", PlayerCreation.PlayerCreationListHandler);
             Logging.Log(typeof(MainServer), "Started on {0}:{1}", LogType.Info, ip, port);
         }
     }

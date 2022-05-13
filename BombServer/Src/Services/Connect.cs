@@ -35,12 +35,12 @@ namespace BombServerEmu_MNR.Src.Services
                 // Its still unknown what type of config is sent, there seems to be multiple config types, the type is decided by the root node? (Need to verify how the XML works first)
                 // The config in MMConfig.xml is a rough guess, it crashes the game right now though, reason is unknown, the IDA decomp is a mess :(
                 // I am 100% certain it is XML, the same functions used in BombXml decoding are used here
-                //if (service.name == "matchmaking")
-                //{
+                if (service.name == "gamemanager")
+                {
                     var config = File.ReadAllBytes(@"Data\Resources\MMConfig.xml");
                     xml.AddParam("MMConfigFile", Convert.ToBase64String(config));
                     xml.AddParam("MMConfigFileSize", config.Length);
-                //}
+                }
                 //xml.AddParam("MMConfigFile", Convert.ToBase64String(new byte[1024]));
                 //xml.AddParam("MMConfigFileSize", "1024");
             }
@@ -72,10 +72,15 @@ namespace BombServerEmu_MNR.Src.Services
             //xml.AddParam("numplayerslist", "1");
             //xml.AddParam("playerlist", Convert.ToBase64String(new byte[255]));
             //xml.AddParam("attributes", Convert.ToBase64String(new byte[255]));
+            var ipEndPoint = (System.Net.IPEndPoint)client.client.Client.RemoteEndPoint;
             xml.SetName("gamemanager");
             xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
-            xml.SetMethod("kickedFromGame");
-            xml.AddParam("reason", "test");
+            xml.SetMethod("updateP2PInfo");
+            xml.AddParam("playername", "Jonopiel");
+            xml.AddParam("p2pAddr", ipEndPoint.Address);
+            xml.AddParam("p2pPort", "1234");
+            xml.AddParam("p2pAddrPrivate", ipEndPoint.Address);
+            xml.AddParam("p2pPortPrivate", "1234");
             client.SendXmlData(xml);
         }
     }

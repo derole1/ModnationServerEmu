@@ -30,8 +30,8 @@ namespace BombServerEmu_MNR.Src
             services.Add(new Directory("192.168.1.196", 10501).service);
 
             services.Add(new Matchmaking("192.168.1.196", 10510).service);
-            services.Add(new GameManager("192.168.1.196", 10511).service);
-            services.Add(new GameBrowser("192.168.1.196", 10512).service);
+            services.Add(new GameManager("192.168.1.196", 10505).service);
+            services.Add(new GameBrowser("192.168.1.196", 10412).service);
 
             services.Add(new TextComm("192.168.1.196", 10513).service);
             services.Add(new PlayGroup("192.168.1.196", 10514).service);

@@ -24,7 +24,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         BombService service;
 
-        TcpClient client;
+        public TcpClient client;
         X509Certificate2 cert;
 
         UniversalNetworkStream stream;

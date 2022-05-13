@@ -98,6 +98,8 @@
     <Compile Include="Src\Protocols\HttpApi.cs" />
     <Compile Include="Src\Services\CDNServer.cs" />
     <Compile Include="Src\Services\Handlers\ContentUrl.cs" />
+    <Compile Include="Src\Services\Handlers\Leaderboard.cs" />
+    <Compile Include="Src\Services\Handlers\PlayerCreation.cs" />
     <Compile Include="Src\Services\Handlers\Policy.cs" />
     <Compile Include="Src\Services\Handlers\Preferences.cs" />
     <Compile Include="Src\Services\Handlers\Resources.cs" />

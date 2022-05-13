@@ -35,13 +35,36 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("listGames");
             //xml.SetError("noGamesAvailable");
             var bw = new BinaryWriter(new MemoryStream());
-            bw.Write(new byte[12]);
-            bw.Write(0);    //Is this where GamesCount goes?
-            bw.Write(new byte[112]);
+            bw.Write(1.SwapBytes());    //GameCount im pretty sure
+
+            bw.Write(0.SwapBytes());    //Some ID? int32 for sure
+            bw.Write(2.SwapBytes());
+            bw.Write(Encoding.ASCII.GetBytes("HI"));
+            bw.Write(2.SwapBytes());
+            bw.Write(Encoding.ASCII.GetBytes("HI"));
+            bw.Write(2.SwapBytes());
+            bw.Write(Encoding.ASCII.GetBytes("HI"));
+
+            bw.Write(new byte[255]);
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
-            var gameList = new BombAttributeList();
-            //TODO: What goes here, and are the markers used in the above class even accurate?
-            xml.AddParam("serverGameList", Convert.ToBase64String(gameList.ToArray())); //This uses BombAttributeList, but maybe with slightly different markers?
+            //var gameList = new BombAttributeList();
+            bw = new BinaryWriter(new MemoryStream());
+            bw.Write(1.SwapBytes());    //numFriends
+
+            bw.Write(0.SwapBytes());
+
+            bw.Write(2.SwapBytes());
+            bw.Write(Encoding.ASCII.GetBytes("HI"));    //Is this a string_member???? It doesnt throw string_member error if its invalid
+
+            bw.Write(1.SwapBytes());    //Count for something
+            bw.Write(0.SwapBytes());
+            bw.Write(0.SwapBytes());
+
+            bw.Write(9.SwapBytes());    //GameName
+            bw.Write(Encoding.ASCII.GetBytes("test_game"));
+
+            bw.Write(new byte[255]);
+            xml.AddParam("serverGameList", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray())); //This uses BombAttributeList, but maybe with slightly different markers? (Im now doubting this...)
             xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));
             client.SendXmlData(xml);
         }

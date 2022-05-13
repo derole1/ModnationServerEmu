@@ -22,7 +22,7 @@ namespace ModnationServer.Src.Services.Handlers
             var root = doc.CreateElement("response");
             doc.CreateElement(root, "policy", "Modnation server rewrite!", new KeyValuePair<string, string>[] {
                 new KeyValuePair<string, string>("id", "1"),
-                new KeyValuePair<string, string>("is_accepted", "false"),
+                new KeyValuePair<string, string>("is_accepted", "true"),
                 new KeyValuePair<string, string>("name", "Online User Agreement"),
             });
             doc.SetResult(0);

@@ -110,7 +110,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
                         methods[method](this, sslClient, xml);
                     }
                 }
-            } catch (Exception e) { /*Logging.Log(typeof(BombService), "{0}", LogType.Debug, e);*/ }
+            } catch (Exception e) { Logging.Log(typeof(BombService), "{0}", LogType.Debug, e); }
             Logging.Log(typeof(BombService), "Connection lost!", LogType.Info);
             sslClient.Close();
         }
