@@ -27,39 +27,7 @@ namespace BombServerEmu_MNR.Src.Services
         void GetServiceListHandler(BombService service, SSLClient client, BombXml xml)
         {
             xml.SetMethod("getServiceList");
-            var bw = new BinaryWriter(new MemoryStream());
-            int i = 0;
-            foreach (var s in Program.services) {
-                if (s.name != "connect" &&
-                    s.name != "directory") {
-                    string name = s.name.AddNullTerminator();
-                    bw.Write(name.Length.SwapBytes());
-                    bw.Write(Encoding.ASCII.GetBytes(name));
-                    bw.Write(1.SwapBytes());    //Number of servers
-
-                    string ip = s.ip.AddNullTerminator();
-                    bw.Write(ip.Length.SwapBytes());
-                    bw.Write(Encoding.ASCII.GetBytes(ip));
-
-                    var uuid = Encoding.ASCII.GetBytes("9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
-                    bw.Write(uuid.Length.SwapBytes());  //Some string goes here?
-                    bw.Write(uuid);
-
-                    string port = s.port.ToString().AddNullTerminator();
-                    bw.Write(port.Length.SwapBytes());
-                    bw.Write(Encoding.ASCII.GetBytes(port));
-
-                    string serviceProtocol = (s.protocol == ProtocolType.TCP ? "TCP" : "RUDP").AddNullTerminator();
-                    bw.Write(serviceProtocol.Length.SwapBytes());
-                    bw.Write(Encoding.ASCII.GetBytes(serviceProtocol));
-                    //(s.name == "gamemanager" ? 1 : 0)
-                    bw.Write(0.SwapBytes());    //Doesnt seem to affect anything
-                    bw.Write(i.SwapBytes());    //SessionKey
-                }
-                i++;
-            }
-            bw.Write(new byte[0xFF]);   //Hack
-            xml.AddParam("servicesList", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
+            xml.AddParam("servicesList", Convert.ToBase64String(new BombServiceList(Program.services).ToArray()));
             xml.AddParam("ClusterUUID", "1");   //TODO
             client.SendXmlData(xml);
         }

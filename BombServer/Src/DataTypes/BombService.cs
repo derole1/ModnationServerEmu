@@ -19,6 +19,8 @@ namespace BombServerEmu_MNR.Src.DataTypes
 
     class BombService
     {
+        const int KEEP_ALIVE_INVERVAL = 10000;
+
         public string name;
         public ProtocolType protocol;
         public bool isDirectConnect;
@@ -81,7 +83,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
         {
             try
             {
-                sslClient.SetKeepAlive(30000);
+                sslClient.SetKeepAlive(KEEP_ALIVE_INVERVAL);
                 while (sslClient.HasConnection())
                 {
                     if (sslClient.hasDirectConnection)

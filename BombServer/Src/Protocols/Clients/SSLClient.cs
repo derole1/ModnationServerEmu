@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
@@ -24,7 +25,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         {
             KeepAlive = 0x61,
             Data = 0x64,
-            Unk1 = 0x66,
+            Unk1 = 0x66,    //Unk1 and Unk2 exist in the switch statement, but seem to be unimplemented
             Unk2 = 0x65,
             Reset = 0x60
         }
@@ -37,6 +38,8 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         X509Certificate2 cert;
 
         UniversalNetworkStream stream;
+
+        Timer keepAlive;
 
         public SSLClient(BombService service, TcpClient client, X509Certificate2 cert = null)
         {
@@ -56,21 +59,9 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Logging.Log(typeof(SSLClient), "SSLStream OK!", LogType.Debug);
         }
 
-        public void SetKeepAlive(uint interval)
+        public void SetKeepAlive(int interval)
         {
-            int size = sizeof(uint);
-            byte[] keepAlive = new byte[size * 3];
-
-            // Pack the byte array:
-            // Turn keepalive on
-            Buffer.BlockCopy(BitConverter.GetBytes((uint)1), 0, keepAlive, 0, size);
-            // Set amount of time without activity before sending a keepalive to 5 seconds
-            Buffer.BlockCopy(BitConverter.GetBytes(interval), 0, keepAlive, size, size);
-            // Set keepalive interval to 5 seconds
-            Buffer.BlockCopy(BitConverter.GetBytes(interval), 0, keepAlive, size * 2, size);
-
-            // Set the keep-alive settings on the underlying Socket
-            client.Client.IOControl(IOControlCode.KeepAliveValues, keepAlive, null);
+            keepAlive = new Timer(SendKeepAlive, new AutoResetEvent(false), 0, interval);
             Logging.Log(typeof(SSLClient), "Updated KeepAlive interval to {0}ms", LogType.Debug, interval);
         }
 
@@ -103,6 +94,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         {
             WriteSocket(new byte[0], EBombPacketType.KeepAlive);
         }
+        void SendKeepAlive(object stateInfo) => SendKeepAlive();    //For timer
 
         public void SendReset()
         {
@@ -116,6 +108,8 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public void Close()
         {
+            if (keepAlive != null)
+                keepAlive.Dispose();
             stream.Close();
             client.Close();
         }
@@ -158,6 +152,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
                 //Might be a nice temporary solution until matching works
                 if (type == EBombPacketType.KeepAlive)
                     Logging.Log(typeof(SSLClient), "KeepAlive recieved!", LogType.Debug);
+                    //TODO: Once sessions are implemented, update LastKeepAlive parameter
                 return type == 0 ? null : ReadSocket();
             }
         }
@@ -165,31 +160,28 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         int i = 0;
         void WriteSocket(byte[] data, EBombPacketType packetType)
         {
-            var bw = new BinaryWriter(new MemoryStream());
-            bw.Write((data.Length+21).SwapBytes());
-            bw.Write(new byte[16]);
-            //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
-            //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
-            bw.Write((byte)packetType);    //Protocol type (TCP=0x64FEFFFF)
-            bw.Write((byte)0xFE);
-            bw.Write((byte)0xFF);
-            bw.Write((byte)0xFF);
-            bw.Write(data);
-            bw.Write((byte)0);
-            byte[] buf = ((MemoryStream)bw.BaseStream).ToArray();
-
-            File.WriteAllBytes(string.Format("res{0}_{1}.bin", i, GetHashCode()), buf);
-            i++;
-
-            //File.WriteAllBytes("debug.bin", buf);
-            int bytesWritten = 0;
-            do
+            using (var ms = new MemoryStream())
+            using (var bw = new EndiannessAwareBinaryWriter(ms, EEndianness.Big))
             {
-                int toWrite = Math.Min(1024, buf.Length - bytesWritten);
-                stream.Write(ref buf, bytesWritten, toWrite);
-                bytesWritten += toWrite;
-                Logging.Log(typeof(SSLClient), "Wrote {0}/{1} bytes", LogType.Debug, bytesWritten, buf.Length);
-            } while (bytesWritten < buf.Length);
+                bw.Write(data.Length + 21);
+                bw.Write(new byte[16]);
+                bw.Write((byte)packetType);    //Protocol type (TCP=0x64FEFFFF)
+                bw.Write((byte)0xFE);
+                bw.Write((byte)0xFF);
+                bw.Write((byte)0xFF);
+                bw.Write(data);
+                bw.Write((byte)0);
+                byte[] buf = ((MemoryStream)bw.BaseStream).ToArray();
+
+                int bytesWritten = 0;
+                do
+                {
+                    int toWrite = Math.Min(1024, buf.Length - bytesWritten);
+                    stream.Write(ref buf, bytesWritten, toWrite);
+                    bytesWritten += toWrite;
+                    Logging.Log(typeof(SSLClient), "Wrote {0}/{1} bytes", LogType.Debug, bytesWritten, buf.Length);
+                } while (bytesWritten < buf.Length);
+            }
         }
     }
 }

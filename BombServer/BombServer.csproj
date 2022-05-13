@@ -47,10 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\DataTypes\BombAttributeList.cs" />
+    <Compile Include="Src\DataTypes\BombGameList.cs" />
     <Compile Include="Src\DataTypes\BombService.cs" />
     <Compile Include="Src\DataTypes\BombServiceList.cs" />
     <Compile Include="Src\DataTypes\BombXml.cs" />
+    <Compile Include="Src\Helpers\Extensions\BinaryExtensions.cs" />
     <Compile Include="Src\Helpers\Extensions\Endian.cs" />
+    <Compile Include="Src\Helpers\EndiannessAwareBinaryReader.cs" />
+    <Compile Include="Src\Helpers\EndiannessAwareBinaryWriter.cs" />
     <Compile Include="Src\Helpers\Extensions\FixedSslStream.cs" />
     <Compile Include="Src\Helpers\Extensions\String.cs" />
     <Compile Include="Src\Helpers\UniversalNetworkStream.cs" />
