@@ -18,7 +18,7 @@ namespace BombServerEmu_MNR.Src.Services
         {
             service = new BombService("gamemanager", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
             service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandlerDEBUG);
+            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
             service.RegisterMethod("logClientMessage", null);
             service.RegisterMethod("registerSessionKeyWithTargetBombd", null);

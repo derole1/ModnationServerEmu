@@ -54,6 +54,25 @@ namespace BombServerEmu_MNR.Src.Services
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
             client.hasDirectConnection = service.isDirectConnect;
             client.SendXmlData(xml);
+
+            //TESTING, TODO: Implement this properly
+            new System.Threading.Thread(() => TEST(client)).Start();
+        }
+
+        static void TEST(SSLClient client)
+        {
+            while (client.client.Connected)
+            {
+                try
+                {
+                    client.SendKeepAlive();
+                    System.Threading.Thread.Sleep(10000);
+                }
+                catch
+                {
+                    break;
+                }
+            }
         }
 
         public static void TimeSyncRequestHandlerDEBUG(BombService service, SSLClient client, BombXml xml)

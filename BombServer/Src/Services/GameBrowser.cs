@@ -35,7 +35,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("listGames");
             //xml.SetError("noGamesAvailable");
             var bw = new BinaryWriter(new MemoryStream());
-            bw.Write(1.SwapBytes());    //GameCount im pretty sure
+            bw.Write(0.SwapBytes());    //GameCount im pretty sure
 
             bw.Write(0.SwapBytes());    //Some ID? int32 for sure
             bw.Write(2.SwapBytes());
@@ -49,16 +49,19 @@ namespace BombServerEmu_MNR.Src.Services
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
             //var gameList = new BombAttributeList();
             bw = new BinaryWriter(new MemoryStream());
-            bw.Write(1.SwapBytes());    //numFriends
+            bw.Write(1.SwapBytes());    //numFriends (This might actually be a count? Pointer to best game?
 
             bw.Write(0.SwapBytes());
 
             bw.Write(2.SwapBytes());
             bw.Write(Encoding.ASCII.GetBytes("HI"));    //Is this a string_member???? It doesnt throw string_member error if its invalid
 
-            bw.Write(1.SwapBytes());    //Count for something
-            bw.Write(0.SwapBytes());
-            bw.Write(0.SwapBytes());
+            bw.Write(0.SwapBytes());    //Count for something
+
+            //bw.Write(2.SwapBytes());
+            //bw.Write(Encoding.ASCII.GetBytes("HI"));
+
+            //End of structure for above count
 
             bw.Write(9.SwapBytes());    //GameName
             bw.Write(Encoding.ASCII.GetBytes("test_game"));

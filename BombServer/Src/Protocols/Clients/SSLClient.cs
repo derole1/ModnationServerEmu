@@ -20,6 +20,15 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 {
     class SSLClient
     {
+        public enum EBombPacketType : byte
+        {
+            KeepAlive = 0x61,
+            Data = 0x64,
+            Unk1 = 0x66,
+            Unk2 = 0x65,
+            Reset = 0x60
+        }
+
         public bool hasDirectConnection = false;
 
         BombService service;
@@ -72,7 +81,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public void SendXmlData(BombXml xml)
         {
-            WriteSocket(Encoding.ASCII.GetBytes(xml.GetResDoc()));
+            WriteSocket(Encoding.ASCII.GetBytes(xml.GetResDoc()), EBombPacketType.Data);
         }
 
         public byte[] GetRawData()
@@ -82,12 +91,22 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public void SendRawData(byte[] data)
         {
-            WriteSocket(data);
+            WriteSocket(data, EBombPacketType.Data);
         }
 
         public void SendRawData(BinaryWriter bw)
         {
-            WriteSocket(((MemoryStream)bw.BaseStream).ToArray());
+            WriteSocket(((MemoryStream)bw.BaseStream).ToArray(), EBombPacketType.Data);
+        }
+
+        public void SendKeepAlive()
+        {
+            WriteSocket(new byte[0], EBombPacketType.KeepAlive);
+        }
+
+        public void SendReset()
+        {
+            WriteSocket(new byte[0], EBombPacketType.Reset);
         }
 
         public bool HasConnection()
@@ -109,32 +128,52 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         int x = 0;
         byte[] ReadSocket()
         {
-            byte[] headerBuf = new byte[4];
+            byte[] headerBuf = new byte[24];
             stream.Read(ref headerBuf, 0, headerBuf.Length);
-            int len = BitConverter.ToInt32(headerBuf, 0x00).SwapBytes();
-            byte[] buf = new byte[len];
-            int bytesRead = 0;
-            do
+            int len = BitConverter.ToInt32(headerBuf, 0x00).SwapBytes() - 20;
+            var type = (EBombPacketType)headerBuf[20];
+            if (type == EBombPacketType.Data)
             {
-                bytesRead += stream.Read(ref buf, bytesRead, buf.Length - bytesRead);
-                Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
-            } while (bytesRead < len);
+                byte[] buf = new byte[len];
+                int bytesRead = 0;
+                do
+                {
+                    bytesRead += stream.Read(ref buf, bytesRead, buf.Length - bytesRead);
+                    Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
+                } while (bytesRead < len);
 
-            File.WriteAllBytes(string.Format("req{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf).ToArray());
-            x++;
+                File.WriteAllBytes(string.Format("req{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf).ToArray());
+                x++;
 
-            return buf.Skip(20).ToArray();
+                return buf.ToArray();
+            }
+            else
+            {
+                //Check if we got a KeepAlive packet
+                //The server should periodically ping the client with a KeepAlive, that way if the user
+                //Is sitting somewhere with no matching, e.g. creation station, the game wont disconnect
+                //When the server sends a KeepAlive, the client responds with a KeepAlive and resets its timer
+                //
+                //We can also use this on the production server to stop modspot connection errors from appearing!
+                //Might be a nice temporary solution until matching works
+                if (type == EBombPacketType.KeepAlive)
+                    Logging.Log(typeof(SSLClient), "KeepAlive recieved!", LogType.Debug);
+                return type == 0 ? null : ReadSocket();
+            }
         }
 
         int i = 0;
-        void WriteSocket(byte[] data)
+        void WriteSocket(byte[] data, EBombPacketType packetType)
         {
             var bw = new BinaryWriter(new MemoryStream());
             bw.Write((data.Length+21).SwapBytes());
             bw.Write(new byte[16]);
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
             //bw.Write((ulong)0xFFFFFFFFFFFFFFFF);
-            bw.Write(0x64FEFFFF.SwapBytes());    //Protocol type (TCP=0x64FEFFFF)
+            bw.Write((byte)packetType);    //Protocol type (TCP=0x64FEFFFF)
+            bw.Write((byte)0xFE);
+            bw.Write((byte)0xFF);
+            bw.Write((byte)0xFF);
             bw.Write(data);
             bw.Write((byte)0);
             byte[] buf = ((MemoryStream)bw.BaseStream).ToArray();
