@@ -11,19 +11,29 @@ using System.Security.Cryptography.X509Certificates;
 
 using HttpLib;
 
+using ModnationServer.Src.Database;
+using ModnationServer.Src.Sessions;
 using ModnationServer.Src.Log;
-
 
 namespace ModnationServer.Src.Protocols
 {
     class HttpApi
     {
+        public class ModnationRequest
+        {
+            public HttpRequest Request { get; set; }
+            public SessionManager.Session Session { get; set; }
+            public SQLiteDB Database { get; set; }
+        }
+
         public string ServiceName { get; }
 
         TcpListener listener;
         X509Certificate2 cert;
 
-        Dictionary<string, Action<TcpClient, HttpRequest, HttpResponse>> methods = new Dictionary<string, Action<TcpClient, HttpRequest, HttpResponse>>();
+        SQLiteDB database;
+
+        Dictionary<string, Action<TcpClient, ModnationRequest, HttpResponse>> methods = new Dictionary<string, Action<TcpClient, ModnationRequest, HttpResponse>>();
 
         public HttpApi(string serviceName, string ip, ushort port)
         {
@@ -32,14 +42,21 @@ namespace ModnationServer.Src.Protocols
             new Thread(() => ListenThread()).Start();
         }
 
-        public HttpApi(string ip, ushort port, string certPath, string pass)
+        public HttpApi(string serviceName, string ip, ushort port, string certPath, string pass)
         {
+            ServiceName = serviceName;
             cert = new X509Certificate2(certPath, pass);
             listener = new TcpListener(IPAddress.Parse(ip), port);
             new Thread(() => ListenThread()).Start();
         }
 
-        public void RegisterMethod(string path, Action<TcpClient, HttpRequest, HttpResponse> method)
+        public void AttachDatabase(string dbFile, string schemaFile)
+        {
+            database = new SQLiteDB(dbFile, schemaFile);
+            database.ExecuteSchema();
+        }
+
+        public void RegisterMethod(string path, Action<TcpClient, ModnationRequest, HttpResponse> method)
         {
             methods.Add(path, method);
             Logging.Log(typeof(HttpApi), "[{0}] Registered method {1}", LogType.Debug, ServiceName, path);
@@ -82,7 +99,13 @@ namespace ModnationServer.Src.Protocols
                 Logging.Log(typeof(HttpApi), "[{0}] {1} {2}", LogType.Info, ServiceName, request.RequestMethod, request.Uri);
                 if (methods.ContainsKey(request.Uri))
                 {
-                    methods[request.Uri](client, request, response);
+                    var mnrReq = new ModnationRequest
+                    {
+                        Request = request,
+                        Session = SessionManager.GetSessionBySessionId(1),  //TODO: PlayerConnect ticket parsing
+                        Database = database
+                    };
+                    methods[request.Uri](client, mnrReq, response);
                 }
                 else
                 {
@@ -99,7 +122,8 @@ namespace ModnationServer.Src.Protocols
             client.Close();
         }
 
-        public static Dictionary<string, string> DecodeUriParameters(byte[] data, Encoding enc) => DecodeUriParameters(enc.GetString(data));
+        public static Dictionary<string, string> DecodeUriParameters(byte[] data, int length) => DecodeUriParameters(Encoding.ASCII.GetString(data, 0, length));
+        public static Dictionary<string, string> DecodeUriParameters(byte[] data, int length, Encoding enc) => DecodeUriParameters(enc.GetString(data, 0, length));
 
         public static Dictionary<string, string> DecodeUriParameters(string data)
         {

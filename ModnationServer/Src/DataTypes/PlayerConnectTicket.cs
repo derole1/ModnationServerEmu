@@ -41,5 +41,16 @@ namespace ModnationServer.Src.DataTypes
                 }
             }
         }
+
+        public string Serialize()
+        {
+            //TODO
+            return $"{Convert.ToBase64String(Encoding.ASCII.GetBytes("TEMP TICKET"))}--00000000000000000000000000000000";
+        }
+
+        public override string ToString()
+        {
+            return $"PlayerConnectTicket:\n\nUnimplemented!";
+        }
     }
 }

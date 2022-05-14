@@ -16,9 +16,9 @@ namespace ModnationServer.Src.Services.Handlers
 {
     class Preferences
     {
-        public static void PreferencesHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void PreferencesHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
-            var param = HttpApi.DecodeUriParameters(req.Data, Encoding.UTF8);
+            var param = HttpApi.DecodeUriParameters(req.Request.Data, int.Parse(req.Request.GetHeader("Content-Length")), Encoding.UTF8);
 
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");
@@ -27,7 +27,7 @@ namespace ModnationServer.Src.Services.Handlers
                 new KeyValuePair<string, string>("ip_address", ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString()),
                 new KeyValuePair<string, string>("language_code", param["preference[language_code]"]),
                 new KeyValuePair<string, string>("region_code", param["preference[region_code]"]),
-                new KeyValuePair<string, string>("timezone", "180"),    //Until an issue is fixed
+                new KeyValuePair<string, string>("timezone", param["timezone"]),
             });
             doc.SetResult(0);
             res.Data = doc.Serialize();

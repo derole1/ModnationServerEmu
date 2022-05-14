@@ -111,6 +111,7 @@
     <Compile Include="Src\Services\Handlers\Server.cs" />
     <Compile Include="Src\Services\Handlers\Session.cs" />
     <Compile Include="Src\Services\MainServer.cs" />
+    <Compile Include="Src\Sessions\SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -16,7 +16,7 @@ namespace ModnationServer.Src.Services.Handlers
 {
     class Leaderboard
     {
-        public static void LeaderboardViewHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void LeaderboardViewHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");
@@ -27,8 +27,8 @@ namespace ModnationServer.Src.Services.Handlers
                 new KeyValuePair<string, string>("row_end", "0"),
                 new KeyValuePair<string, string>("page", "0"),
                 new KeyValuePair<string, string>("total_pages", "0"),
-                new KeyValuePair<string, string>("type", req.UriParameters["type"]),
-                new KeyValuePair<string, string>("game_type", req.UriParameters["game_type"])
+                new KeyValuePair<string, string>("type", req.Request.UriParameters["type"]),
+                new KeyValuePair<string, string>("game_type", req.Request.UriParameters["game_type"])
             });
             doc.SetResult(0);
             res.Data = doc.Serialize();

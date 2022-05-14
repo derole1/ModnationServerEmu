@@ -16,7 +16,7 @@ namespace ModnationServer.Src.Services.Handlers
 {
     class Policy
     {
-        public static void PolicyViewHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void PolicyViewHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");
@@ -29,7 +29,7 @@ namespace ModnationServer.Src.Services.Handlers
             res.Data = doc.Serialize();
         }
 
-        public static void PolicyAcceptHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void PolicyAcceptHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");

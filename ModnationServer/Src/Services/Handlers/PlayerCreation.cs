@@ -17,7 +17,7 @@ namespace ModnationServer.Src.Services.Handlers
 {
     class PlayerCreation
     {
-        public static void PlayerCreationListHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void PlayerCreationListHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");

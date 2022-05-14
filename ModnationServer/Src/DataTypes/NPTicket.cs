@@ -75,5 +75,12 @@ namespace ModnationServer.Src.DataTypes
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return $"NPTicket:\n\nVerison:{Version}\nSerialVec:{BitConverter.ToString(SerialVec)}\nIssuerId:{IssuerId}\nIssuedDate:{IssuedDate.ToString("dd/MM/yyyy HH:mm:ss.fff")}\n" +
+                $"ExpiredDate:{ExpiredDate.ToString("dd/MM/yyyy HH:mm:ss.fff")}\nUserId:{UserId}\nOnlineId:{OnlineId}\nRegion:{BitConverter.ToString(Region)}\nDomain:{Domain}\n" +
+                $"ServiceId:{BitConverter.ToString(ServiceId)}\nStatus:{Status}\nStatusDuration:{StatusDuration}\nDateOfBirth:{DateOfBirth}";
+        }
     }
 }

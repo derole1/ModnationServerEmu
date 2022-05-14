@@ -19,10 +19,10 @@ namespace ModnationServer.Src.Services.Handlers
     {
         const string RESOURCE_PATH = @"Data\Resources\";
 
-        public static void GetResourceHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void GetResourceHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             //TODO: Filter characters in uri, dont trust the user!
-            var uri = req.Uri.Split('/', '\\');
+            var uri = req.Request.Uri.Split('/', '\\');
             res.Data = File.ReadAllBytes(RESOURCE_PATH + uri.Last());
             res.Headers["Content-Type"] = "text/xml";
         }

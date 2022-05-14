@@ -16,7 +16,7 @@ namespace ModnationServer.Src.Services.Handlers
 {
     class Server
     {
-        public static void ServerSelectHandler(TcpClient client, HttpRequest req, HttpResponse res)
+        public static void ServerSelectHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)
         {
             var doc = new XML(Encoding.UTF8);
             var root = doc.CreateElement("response");
