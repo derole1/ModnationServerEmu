@@ -40,7 +40,7 @@ namespace ModnationServer.Src.Services.Handlers
             //TEMP
             if (res.Headers.ContainsKey("Cookie"))
                 res.Headers.Remove("Cookie");
-            res.Headers.Add("Set-Cookie", "playerconnect_session_id=BAh7EzoPc2Vzc2lvbl9pZCIlMGVlZjEyNDk0NmJiOThmM2ZlYmQzODM0NmUwYTc3MDU6C2RvbWFpbiIAOhJsYW5ndWFnZV9jb2RlIgplbi11czoQcmVnaW9uX2NvZGUiCXNjZWE6DXRpbWV6b25lIgktMzAwOg1wbGF0Zm9ybSIIUFMzOg1wcmVzZW5jZUkiC09OTElORQY6DWVuY29kaW5nIg1VUy1BU0NJSUkiCmZsYXNoBjsMQA1JQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNoSGFzaHsGOgtub3RpY2VJIiVQcmVmZXJlbmNlcyBzdWNlc3NmdWxseSB1cGRhdGVkIQY7DEANBjoKQHVzZWR7BjsORjoPaXBfYWRkcmVzcyISNzMuMjE1LjE4NS42NDoOcGxheWVyX2lkaQO3JB86DXVzZXJuYW1lIg1zaGFuejJuZDoPY29uc29sZV9pZCIYMDA6MzY6MTQxOjE4MToxMzo1OToVdmlld2luZ19wbGF0Zm9ybSIIUFMzOhZsYXN0X3JlcXVlc3RfbWFkZWwrB3yiqFs%3D--9d686236e0bc9f78ebc46df5cf9be36797c258cf; path=/");
+            res.Headers.Add("Set-Cookie", $"playerconnect_session_id={new PlayerConnectTicket(req.Session).Serialize()}; path=/");
         }
 
         public static void SessionPingHandler(TcpClient client, HttpApi.ModnationRequest req, HttpResponse res)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using ModnationServer.Src.Helpers;
 using ModnationServer.Src.Helpers.Extensions;
@@ -42,6 +43,7 @@ namespace ModnationServer.Src.DataTypes
         public NPTicket() { }
         public NPTicket(string strTicket)
         {
+            strTicket = Regex.Replace(strTicket, @"[^A-Za-z0-9+/=]", "");
             while (strTicket.Length % 4 != 0) { strTicket += "="; }
             using (var ms = new MemoryStream(Convert.FromBase64String(strTicket)))
             using (var br = new EndiannessAwareBinaryReader(ms, EEndianness.Big))
