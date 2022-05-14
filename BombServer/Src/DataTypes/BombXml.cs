@@ -72,12 +72,12 @@ namespace BombServerEmu_MNR.Src.DataTypes
             CreateXmlElement(ref resDoc, ((XmlElement)resDoc.SelectSingleNode("service/transaction/method")), "error", string.Format(" {0} ", error));
         }
 
-        //TODO: Fix this
         public string GetParam(string name)
         {
-            var paramNode = ((XmlElement)reqDoc.SelectSingleNode(string.Format("service/transaction[name='{0}'][1]", name)));
+            var paramNode = ((XmlElement)reqDoc.SelectSingleNode(string.Format("service/transaction/method/param[name=' {0} ']", name)));
             if (paramNode != null) {
-                return paramNode.Value;
+                var text = paramNode["value"].InnerText;
+                return text.Substring(1, text.Length - 2);
             }
             else {
                 Logging.Log(typeof(BombXml), "Param {0} does not exist in request!", LogType.Error, name);

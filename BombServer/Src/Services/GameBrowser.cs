@@ -38,32 +38,32 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("listGames");
             //xml.SetError("noGamesAvailable");
             var bw = new EndiannessAwareBinaryWriter(new MemoryStream(), EEndianness.Big);
-            bw.Write(1);    //GameCount im pretty sure
+            bw.Write(0);    //GameCount im pretty sure
 
             bw.Write(0);    //Some ID? int32 for sure
-            bw.WriteStringMember("HI");
-            bw.WriteStringMember("HI");
-            bw.WriteStringMember("HI");
+            bw.WriteStringMember("");
+            bw.WriteStringMember("");
+            bw.WriteStringMember("");
 
             bw.Write(new byte[255]);
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
             //var gameList = new BombAttributeList();
             bw = new EndiannessAwareBinaryWriter(new MemoryStream(), EEndianness.Big);
-            bw.Write(0);    //numFriends (This might actually be a count? Pointer to best game?
+            //bw.Write(1);    //numFriends (This might actually be a count? Pointer to best game?
 
-            bw.Write(0);
-            bw.Write(0);
+            //bw.Write(0);
+            //bw.Write(0);
 
-            bw.Write(0);
-            //bw.Write(Encoding.ASCII.GetBytes("HI"));    //Is this a string_member???? It doesnt throw string_member error if its invalid
+            //bw.Write(0);
+            ////bw.Write(Encoding.ASCII.GetBytes("HI"));    //Is this a string_member???? It doesnt throw string_member error if its invalid
 
-            bw.Write(0);    //Count for something
+            //bw.Write(0);    //Count for something
 
-            //bw.WriteStringMember("HI");
+            ////bw.WriteStringMember("HI");
 
-            //End of structure for above count
+            ////End of structure for above count
 
-            bw.WriteStringMember("test_game");
+            //bw.WriteStringMember("test_game");
 
             bw.Write(new byte[255]);
             xml.AddParam("serverGameList", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray())); //This uses BombAttributeList, but maybe with slightly different markers? (Im now doubting this...)

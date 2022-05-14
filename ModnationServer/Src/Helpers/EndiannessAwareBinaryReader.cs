@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace BombServerEmu_MNR.Src.Helpers
+namespace ModnationServer.Src.Helpers
 {
     public enum EEndianness
     {

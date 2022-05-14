@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 
-using BombServerEmu_MNR.Src.Log;
+using ModnationServer.Src.Log;
 
-namespace BombServerEmu_MNR.Src.Helpers.Extensions
+namespace ModnationServer.Src.Helpers.Extensions
 {
     static class BinaryExtensions
     {
@@ -21,15 +21,6 @@ namespace BombServerEmu_MNR.Src.Helpers.Extensions
             bin = 8,
             obj = 0x3002
         }
-
-        public static void WriteStringMember(this EndiannessAwareBinaryWriter bw, object value, Encoding enc)
-        {
-            var str = value.ToString();
-            bw.Write(str.Length+1);
-            bw.Write(enc.GetBytes(str));
-            bw.Write((byte)0);
-        }
-        public static void WriteStringMember(this EndiannessAwareBinaryWriter bw, object value) => WriteStringMember(bw, value, Encoding.ASCII);
 
         public static T ReadNPAttribute<T>(this EndiannessAwareBinaryReader br)
         {
@@ -57,11 +48,6 @@ namespace BombServerEmu_MNR.Src.Helpers.Extensions
                     Logging.Log(typeof(BinaryExtensions), "Unknown ENPAttributeType {0}", LogType.Warning, type);
                     return default(T);
             }
-        }
-
-        public static string SerializeIPAddress(IPAddress value)
-        {
-            return Convert.ToBase64String(value.GetAddressBytes());
         }
     }
 }

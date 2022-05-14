@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BombServerEmu_MNR.Src.Helpers.Extensions
+namespace ModnationServer.Src.Helpers.Extensions
 {
     public static class Endian
     {

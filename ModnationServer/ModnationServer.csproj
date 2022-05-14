@@ -89,7 +89,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\DataTypes\NPTicket.cs" />
+    <Compile Include="Src\DataTypes\PlayerConnectTicket.cs" />
     <Compile Include="Src\Helpers\Database.cs" />
+    <Compile Include="Src\Helpers\EndiannessAwareBinaryReader.cs" />
+    <Compile Include="Src\Helpers\Extensions\BinaryExtensions.cs" />
+    <Compile Include="Src\Helpers\Extensions\Endian.cs" />
     <Compile Include="Src\Helpers\SQLiteDB.cs" />
     <Compile Include="Src\Helpers\XML.cs" />
     <Compile Include="Src\Log\Logging.cs" />

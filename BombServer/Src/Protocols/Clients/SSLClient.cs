@@ -135,10 +135,6 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
                     bytesRead += stream.Read(ref buf, bytesRead, buf.Length - bytesRead);
                     Logging.Log(typeof(SSLClient), "Read {0}/{1} bytes", LogType.Debug, bytesRead, buf.Length);
                 } while (bytesRead < len);
-
-                File.WriteAllBytes(string.Format("req{0}_{1}.bin", x, GetHashCode()), headerBuf.Concat(buf).ToArray());
-                x++;
-
                 return buf.ToArray();
             }
             else
