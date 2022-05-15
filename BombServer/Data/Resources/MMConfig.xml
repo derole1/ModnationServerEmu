@@ -1,30 +1,6 @@
 <ValuePair>
-	<param>
-		<name> SimpleFilter </name>
-		<value> name="TEST" </value>
-	</param>
-	<param>
-		<name> AdvancedFilter </name>
-		<value> name="TEST" weight="0" excludeFromMultipliers="false" </value>
-	</param>
-	<param>
-		<name> PossibleValue </name>
-		<value> default="true" </value>
-	</param>
-	<param>
-		<name> ThresholdDecaySetting </name>
-		<value> timeout="10" seconds="10" threshold="10" </value>
-	</param>
-	<param>
-		<name> NumberPreference </name>
-		<value> name="TEST" range="10" weight="0" default="true" </value>
-	</param>
-	<param>
-		<name> MatchSizeDecaySetting </name>
-		<value> type="1" seconds="10" matchsize="8" maxmatchsize="8" default="true" </value>
-	</param>
-	<param>
-		<name> LonelinessReductionMultiplier </name>
-		<value> seconds="10" multiplier="1.0" maxapplications="1" </value>
-	</param>
+	<ThresholdDecaySetting timeout="10"></ThresholdDecaySetting>
+	<MatchSizeDecaySetting type="0" maxmatchsize="12" default="false"></MatchSizeDecaySetting>
+	<ValuePair seconds="10" threshold="10"></ValuePair>
+	<LonelinessReductionMultiplier seconds="10" multiplier="1.0" maxapplications="1"></LonelinessReductionMultiplier>
 </ValuePair>
