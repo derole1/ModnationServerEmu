@@ -5,7 +5,7 @@ A server emu for ModNation Racers
 BombServer - Emulates the BombProof matchmaking server that is used by the game, this may work with LBPK without modifcation (though untested)
 
 TODO:
-- ~~Connects to directory service~~
+- ~~Connect to directory service~~
 - ~~Get a list of services to connect to~~
 - ~~Connect to all the initially required services successfully~~
 - ~~Request a game list from gamebrowser~~
