@@ -13,15 +13,15 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class Stats
     {
-        public BombService service;
+        public BombService Service { get; }
 
         public Stats(string ip, ushort port)
         {
-            service = new BombService("stats", ProtocolType.RUDP, true, ip, port);
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("stats", ProtocolType.RUDP, true, ip, port);
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
-            service.RegisterDirectConnect(DirectConnectHandler);
+            Service.RegisterDirectConnect(DirectConnectHandler);
         }
 
         void DirectConnectHandler(SSLClient client, BinaryReader br, BinaryWriter bw)

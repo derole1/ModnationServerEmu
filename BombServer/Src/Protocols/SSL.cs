@@ -33,7 +33,7 @@ namespace BombServerEmu_MNR.Src.Protocols
         public void SetCert(string certPath, string certPass)
         {
             cert = new X509Certificate2(certPath, certPass);
-            Logging.Log(typeof(SSL), "Updated cert for {0}! Using {1}", LogType.Debug, service.name, certPath);
+            Logging.Log(typeof(SSL), "Updated cert for {0}! Using {1}", LogType.Debug, service.Name, certPath);
         }
 
         public void Start()

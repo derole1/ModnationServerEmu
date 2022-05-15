@@ -59,6 +59,7 @@
     <Compile Include="Src\Helpers\Extensions\FixedSslStream.cs" />
     <Compile Include="Src\Helpers\Extensions\String.cs" />
     <Compile Include="Src\Helpers\UniversalNetworkStream.cs" />
+    <Compile Include="Src\Helpers\UUID.cs" />
     <Compile Include="Src\Log\Logging.cs" />
     <Compile Include="Src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

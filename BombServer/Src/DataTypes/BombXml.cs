@@ -38,7 +38,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
         {
             resDoc = new XmlDocument();
             var root = CreateXmlElement(ref resDoc, "service"); {
-                root.SetAttribute("name", service.name);
+                root.SetAttribute("name", service.Name);
                 var trans = CreateXmlElement(ref resDoc, root, "transaction"); {
                     trans.SetAttribute("id", ((XmlElement)reqDoc.SelectSingleNode("service/transaction")).GetAttribute("id"));
                     trans.SetAttribute("type", TRANSACTION_TYPE_REPLY);

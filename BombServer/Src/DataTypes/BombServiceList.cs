@@ -21,9 +21,9 @@ namespace BombServerEmu_MNR.Src.DataTypes
 
         public void Add(BombService service)
         {
-            if (!ServiceList.ContainsKey(service.name))
-                ServiceList.Add(service.name, new List<BombService>());
-            ServiceList[service.name].Add(service);
+            if (!ServiceList.ContainsKey(service.Name))
+                ServiceList.Add(service.Name, new List<BombService>());
+            ServiceList[service.Name].Add(service);
         }
 
         public void AddRange(params BombService[] services)
@@ -43,10 +43,10 @@ namespace BombServerEmu_MNR.Src.DataTypes
                     bw.Write(serviceType.Value.Count);
                     foreach (var service in serviceType.Value)
                     {
-                        bw.WriteStringMember(service.ip);
-                        bw.WriteStringMember("9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
-                        bw.WriteStringMember(service.port);
-                        bw.WriteStringMember(service.protocol);
+                        bw.WriteStringMember(service.IP);
+                        bw.WriteStringMember(service.Uuid);
+                        bw.WriteStringMember(service.Port);
+                        bw.WriteStringMember(service.Protocol);
                         bw.Write(0);
                         bw.Write(1);    //SessionKey
                     }

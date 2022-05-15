@@ -8,12 +8,15 @@ using System.Diagnostics;
 using BombServerEmu_MNR.Src.Log;
 using BombServerEmu_MNR.Src.DataTypes;
 using BombServerEmu_MNR.Src.Services;
+using BombServerEmu_MNR.Src.Helpers;
 
 namespace BombServerEmu_MNR.Src
 {
     class Program
     {
-        public static List<BombService> services = new List<BombService>();
+        public static List<BombService> Services { get; } = new List<BombService>();
+
+        public static string ClusterUuid { get; } = UUID.GenerateUUID();
 
         static void Main(string[] args)
         {
@@ -27,25 +30,25 @@ namespace BombServerEmu_MNR.Src
                 Console.ReadKey();
                 return;
             }
-            services.Add(new Directory("192.168.1.196", 10501).service);
+            Services.Add(new Directory("192.168.1.196", 10501).Service);
 
-            services.Add(new Matchmaking("192.168.1.196", 10510).service);
-            services.Add(new GameManager("192.168.1.196", 10505).service);
-            services.Add(new GameBrowser("192.168.1.196", 10412).service);
+            Services.Add(new Matchmaking("192.168.1.196", 10510).Service);  //Made up port
+            Services.Add(new GameManager("192.168.1.196", 10505).Service);
+            Services.Add(new GameBrowser("192.168.1.196", 10412).Service);
 
-            services.Add(new TextComm("192.168.1.196", 10513).service);
-            services.Add(new PlayGroup("192.168.1.196", 10514).service);
-            services.Add(new Stats("192.168.1.196", 10515).service);
+            Services.Add(new TextComm("192.168.1.196", 10513).Service);  //Made up port
+            Services.Add(new PlayGroup("192.168.1.196", 10514).Service);  //Made up port
+            Services.Add(new Stats("192.168.1.196", 50002).Service);
 
-            //services.Add(new Directory("192.168.1.196", 11501).service);
+            //Services.Add(new Directory("192.168.1.196", 11501).Service);
 
-            //services.Add(new Matchmaking("192.168.1.196", 11510).service);
-            //services.Add(new GameManager("192.168.1.196", 11511).service);
-            //services.Add(new GameBrowser("192.168.1.196", 11512).service);
+            //Services.Add(new Matchmaking("192.168.1.196", 11510).Service);
+            //Services.Add(new GameManager("192.168.1.196", 11511).Service);
+            //Services.Add(new GameBrowser("192.168.1.196", 11512).Service);
 
-            //services.Add(new TextComm("192.168.1.196", 11513).service);
-            //services.Add(new PlayGroup("192.168.1.196", 11514).service);
-            //services.Add(new Stats("192.168.1.196", 11515).service);
+            //Services.Add(new TextComm("192.168.1.196", 11513).Service);
+            //Services.Add(new PlayGroup("192.168.1.196", 11514).Service);
+            //Services.Add(new Stats("192.168.1.196", 11515).Service);
         }
 
         static bool CheckCerts()

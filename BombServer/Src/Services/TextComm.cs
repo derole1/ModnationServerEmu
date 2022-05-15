@@ -12,19 +12,19 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class TextComm
     {
-        public BombService service;
+        public BombService Service { get; }
 
         public TextComm(string ip, ushort port)
         {
-            service = new BombService("textcomm", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("textcomm", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
-            service.RegisterMethod("CreateGroup", CreateGroupHandler);
-            service.RegisterMethod("JoinGroup", CreateGroupHandler);
-            service.RegisterMethod("LeaveGroup", CreateGroupHandler);
-            service.RegisterMethod("InviteUserToGroup", CreateGroupHandler);
-            service.RegisterMethod("TextMessage", CreateGroupHandler);
+            Service.RegisterMethod("CreateGroup", CreateGroupHandler);
+            Service.RegisterMethod("JoinGroup", CreateGroupHandler);
+            Service.RegisterMethod("LeaveGroup", CreateGroupHandler);
+            Service.RegisterMethod("InviteUserToGroup", CreateGroupHandler);
+            Service.RegisterMethod("TextMessage", CreateGroupHandler);
         }
 
         void CreateGroupHandler(BombService service, SSLClient client, BombXml xml)

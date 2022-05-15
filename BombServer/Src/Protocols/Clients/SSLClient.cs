@@ -27,7 +27,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Data = 0x64,
             Unk1 = 0x66,    //Unk1 and Unk2 exist in the switch statement, but seem to be unimplemented
             Unk2 = 0x65,
-            Reset = 0x60
+            Reset = 0x60    //This seems to mainly be used in RUDP protocol
         }
 
         public bool hasDirectConnection = false;

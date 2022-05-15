@@ -26,7 +26,8 @@ namespace ModnationServer.Src.Log
 {
     class Logging
     {
-        public static LogLevel logLevel = LogLevel.Error;
+        //public static LogLevel logLevel = LogLevel.Error;
+        public static LogLevel logLevel = LogLevel.Debug;
 
         static FileStream logFile;
 

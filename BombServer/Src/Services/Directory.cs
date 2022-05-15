@@ -13,22 +13,22 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class Directory
     {
-        public BombService service;
+        public BombService Service { get; }
 
         public Directory(string ip, ushort port)
         {
-            service = new BombService("directory", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("directory", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
-            service.RegisterMethod("getServiceList", GetServiceListHandler);
+            Service.RegisterMethod("getServiceList", GetServiceListHandler);
         }
 
         void GetServiceListHandler(BombService service, SSLClient client, BombXml xml)
         {
             xml.SetMethod("getServiceList");
-            xml.AddParam("servicesList", Convert.ToBase64String(new BombServiceList(Program.services).ToArray()));
-            xml.AddParam("ClusterUUID", "1");   //TODO
+            xml.AddParam("servicesList", Convert.ToBase64String(new BombServiceList(Program.Services).ToArray()));
+            xml.AddParam("ClusterUUID", Program.ClusterUuid);
             client.SendXmlData(xml);
         }
     }

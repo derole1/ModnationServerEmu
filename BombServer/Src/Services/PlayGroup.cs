@@ -12,22 +12,22 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class PlayGroup
     {
-        public BombService service;
+        public BombService Service;
 
         public PlayGroup(string ip, ushort port)
         {
-            service = new BombService("playgroup", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("playgroup", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
-            service.RegisterMethod("createPlaygroup", null);
-            service.RegisterMethod("joinPlaygroupById", null);
-            service.RegisterMethod("inviteUser", null);
-            service.RegisterMethod("textMessage", null);
-            service.RegisterMethod("notifyGroup", null);
-            service.RegisterMethod("requestGroupJoinGame", null);
-            service.RegisterMethod("requestGroupLeaveGame", null);
-            service.RegisterMethod("leavePlaygroup", null);
+            Service.RegisterMethod("createPlaygroup", null);
+            Service.RegisterMethod("joinPlaygroupById", null);
+            Service.RegisterMethod("inviteUser", null);
+            Service.RegisterMethod("textMessage", null);
+            Service.RegisterMethod("notifyGroup", null);
+            Service.RegisterMethod("requestGroupJoinGame", null);
+            Service.RegisterMethod("requestGroupLeaveGame", null);
+            Service.RegisterMethod("leavePlaygroup", null);
         }
     }
 }

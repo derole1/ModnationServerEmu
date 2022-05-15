@@ -22,7 +22,7 @@ namespace BombServerEmu_MNR.Src.Services
 
             xml.SetName("connect");
             xml.SetMethod("startConnect");
-            if (service.isDirectConnect) {
+            if (service.IsDirectConnect) {
                 Logging.Log(typeof(Connect), "Service is directConnect! Requesting directConnection", LogType.Info);
                 xml.AddParam("gameserver", "directConnection");
                 //xml.AddParam("gameserver", "directGameServer");
@@ -31,15 +31,15 @@ namespace BombServerEmu_MNR.Src.Services
                 xml.AddParam("bombd_builddate", "3/29/2010 4:52:54 PM");
                 xml.AddParam("bombd_revision", "1733");
                 xml.AddParam("bombd_OS", "1");
-                //xml.AddParam("bombd_ServerIP", service.ip);
-                //xml.AddParam("bombd_ServerPort", service.port);
-                xml.AddParam("serveruuid", "9aa555a8-cc1a-11e8-81c9-22000acbd9b1");
+                xml.AddParam("bombd_ServerIP", service.IP);
+                xml.AddParam("bombd_ServerPort", service.Port);
+                xml.AddParam("serveruuid", service.Uuid);
                 xml.AddParam("username", ticket.OnlineId);
                 xml.AddParam("userid", ticket.UserId);
                 // In the packet logs, this is the service that gets a config (a fairly large one that is, likely >1024 bytes)
                 // Its still unknown what type of config is sent, there seems to be multiple config types, the type is decided by the root node? (Need to verify how the XML works first)
                 // The config in MMConfig.xml is a rough guess, it seems to be almost correct :D
-                if (service.name == "gamemanager")
+                if (service.Name == "gamemanager")
                 {
                     var config = File.ReadAllBytes(@"Data\Resources\MMConfig.xml");
                     xml.AddParam("MMConfigFile", Convert.ToBase64String(config));
@@ -56,7 +56,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetName("connect");
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
-            client.hasDirectConnection = service.isDirectConnect;
+            client.hasDirectConnection = service.IsDirectConnect;
             client.SendXmlData(xml);
         }
 
@@ -65,7 +65,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetName("connect");
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
-            client.hasDirectConnection = service.isDirectConnect;
+            client.hasDirectConnection = service.IsDirectConnect;
             client.SendXmlData(xml);
             //xml.SetName("gamemanager");
             //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);

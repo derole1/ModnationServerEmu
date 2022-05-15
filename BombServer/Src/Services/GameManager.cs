@@ -12,28 +12,28 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class GameManager
     {
-        public BombService service;
+        public BombService Service { get; }
 
         public GameManager(string ip, ushort port)
         {
-            service = new BombService("gamemanager", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("gamemanager", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
-            service.RegisterMethod("logClientMessage", null);
-            service.RegisterMethod("registerSessionKeyWithTargetBombd", null);
-            service.RegisterMethod("createGame", null);
-            service.RegisterMethod("joinEmptyGame", null);
-            service.RegisterMethod("leaveGame", null);
-            service.RegisterMethod("leaveCurrentGame", LeaveCurrentGameHandler);
-            service.RegisterMethod("reserveGame", null);
-            service.RegisterMethod("reserveGameSlotsForPlayers", null);
-            service.RegisterMethod("dropReservedGame", null);
-            service.RegisterMethod("migrateToGame", null);
-            service.RegisterMethod("requestDirectHostConnection", null);    //???
-            service.RegisterMethod("directConnectionStatus", null);
-            service.RegisterMethod("publishAttributes", null);
-            service.RegisterMethod("kickPlayer", null);
+            Service.RegisterMethod("logClientMessage", null);
+            Service.RegisterMethod("registerSessionKeyWithTargetBombd", null);
+            Service.RegisterMethod("createGame", null);
+            Service.RegisterMethod("joinEmptyGame", null);
+            Service.RegisterMethod("leaveGame", null);
+            Service.RegisterMethod("leaveCurrentGame", LeaveCurrentGameHandler);
+            Service.RegisterMethod("reserveGame", null);
+            Service.RegisterMethod("reserveGameSlotsForPlayers", null);
+            Service.RegisterMethod("dropReservedGame", null);
+            Service.RegisterMethod("migrateToGame", null);
+            Service.RegisterMethod("requestDirectHostConnection", null);    //???
+            Service.RegisterMethod("directConnectionStatus", null);
+            Service.RegisterMethod("publishAttributes", null);
+            Service.RegisterMethod("kickPlayer", null);
         }
 
         void CreateGameHandler(BombService service, SSLClient client, BombXml xml)

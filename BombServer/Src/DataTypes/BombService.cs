@@ -8,6 +8,7 @@ using System.IO;
 using BombServerEmu_MNR.Src.Log;
 using BombServerEmu_MNR.Src.Protocols;
 using BombServerEmu_MNR.Src.Protocols.Clients;
+using BombServerEmu_MNR.Src.Helpers;
 
 namespace BombServerEmu_MNR.Src.DataTypes
 {
@@ -21,11 +22,12 @@ namespace BombServerEmu_MNR.Src.DataTypes
     {
         const int KEEP_ALIVE_INVERVAL = 10000;
 
-        public string name;
-        public ProtocolType protocol;
-        public bool isDirectConnect;
-        public string ip;
-        public ushort port;
+        public string Name { get; }
+        public ProtocolType Protocol { get; }
+        public bool IsDirectConnect { get; }
+        public string IP { get; }
+        public ushort Port { get; }
+        public string Uuid { get; }
 
         SSL sslListener;
         RUDP rudpListener;
@@ -35,11 +37,12 @@ namespace BombServerEmu_MNR.Src.DataTypes
 
         public BombService(string name, ProtocolType protocol, bool isDirectConnect, string ip, ushort port, string cert = null, string pass = "")
         {
-            this.name = name;
-            this.protocol = protocol;
-            this.isDirectConnect = isDirectConnect;
-            this.ip = ip;
-            this.port = port;
+            Name = name;
+            Protocol = protocol;
+            IsDirectConnect = isDirectConnect;
+            IP = ip;
+            Port = port;
+            Uuid = UUID.GenerateUUID();
             if (protocol == ProtocolType.TCP) {
                 sslListener = new SSL(this, ip, port);
                 sslListener.SetCert(string.Format(@"Data\Certs\{0}", cert), pass);
@@ -57,17 +60,17 @@ namespace BombServerEmu_MNR.Src.DataTypes
         public void RegisterMethod(string method, Action<BombService, SSLClient, BombXml> function)
         {
             methods.Add(method, function);
-            Logging.Log(typeof(BombService), "Registered method {0} to service {1}", LogType.Debug, method, name);
+            Logging.Log(typeof(BombService), "Registered method {0} to service {1}", LogType.Debug, method, Name);
             if (function == null)
             {
-                Logging.Log(typeof(BombService), "Registered method {0} in service {1} is null! Service will act like it doesn't exist", LogType.Warning, method, name);
+                Logging.Log(typeof(BombService), "Registered method {0} in service {1} is null! Service will act like it doesn't exist", LogType.Warning, method, Name);
             }
         }
 
         public void RegisterDirectConnect(Action<SSLClient, BinaryReader, BinaryWriter> function)
         {
             directMethod = function;
-            Logging.Log(typeof(BombService), "Registered directConnect method to service {0}", LogType.Debug, name);
+            Logging.Log(typeof(BombService), "Registered directConnect method to service {0}", LogType.Debug, Name);
         }
 
         void ListenThread(SSL sslListener)
@@ -93,10 +96,10 @@ namespace BombServerEmu_MNR.Src.DataTypes
                         var bw = new BinaryWriter(new MemoryStream());
                         if (directMethod == null)
                         {
-                            Logging.Log(typeof(BombService), "No handler exists for directConnect at service {0}!", LogType.Error, name);
+                            Logging.Log(typeof(BombService), "No handler exists for directConnect at service {0}!", LogType.Error, Name);
                             break;
                         }
-                        Logging.Log(typeof(BombService), "Received directConnect request at service {0}", LogType.Info, name);
+                        Logging.Log(typeof(BombService), "Received directConnect request at service {0}", LogType.Info, Name);
                         directMethod(sslClient, br, bw);
                     }
                     else
@@ -105,10 +108,10 @@ namespace BombServerEmu_MNR.Src.DataTypes
                         string method = xml.GetMethod();
                         if (!methods.ContainsKey(method) || methods[method] == null)
                         {
-                            Logging.Log(typeof(BombService), "No handler exists for method {0} at service {1}!", LogType.Error, method, name);
+                            Logging.Log(typeof(BombService), "No handler exists for method {0} at service {1}!", LogType.Error, method, Name);
                             continue;
                         }
-                        Logging.Log(typeof(BombService), "Received request for {0} at service {1}", LogType.Info, method, name);
+                        Logging.Log(typeof(BombService), "Received request for {0} at service {1}", LogType.Info, method, Name);
                         methods[method](this, sslClient, xml);
                     }
                 }

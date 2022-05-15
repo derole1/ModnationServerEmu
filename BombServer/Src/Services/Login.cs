@@ -13,13 +13,13 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class Login
     {
-        public BombService service;
+        public BombService Service { get; }
 
         public Login(string ip, ushort port)
         {
-            service = new BombService("login", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
-            service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service = new BombService("login", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
         }
     }
 }
