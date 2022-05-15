@@ -34,12 +34,22 @@ namespace BombServerEmu_MNR.Src.Services
 
             //This response is 120% correct, investigate the matchmaking config, thats likely why the game wont create a game
             xml.SetMethod("listGames");
-            var gameList = new BombGameList();
-            gameList.Add(new BombGame
+            var gameList = new BombGameList
+            {
+                Unk1 = 0,
+                Unk2 = "test_game",
+                Unk3 = "test_game",
+                Unk4 = "test_game"
+            };
+            var game = new BombGame
             {
                 GameName = "test_game",
                 Unk1 = "TEST"
-            });
+            };
+            game.AdvancedFilters.Add("__IS_RANKED", "0");
+            game.AdvancedFilters.Add("__JOIN_MODE", "OPEN");
+            game.AdvancedFilters.Add("__MM_MODE_G", "OPEN");
+            gameList.Add(game);
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(gameList.SerializeHeader()));
             xml.AddParam("serverGameList", Convert.ToBase64String(gameList.SerializeList()));
             xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));

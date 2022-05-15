@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+using BombServerEmu_MNR.Src.Helpers;
+
 namespace BombServerEmu_MNR.Src.DataTypes
 {
     class BombAttributeList : Dictionary<string, string>
@@ -19,7 +21,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             if (data.Length != 0x884)
                 return;
             using (var ms = new MemoryStream(data))
-            using (var br = new BinaryReader(ms))
+            using (var br = new EndiannessAwareBinaryReader(ms, EEndianness.Big))
             {
                 if (br.ReadInt32() == LIST_START)
                 {
