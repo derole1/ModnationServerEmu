@@ -1,6 +1,16 @@
-<ValuePair>
-	<ThresholdDecaySetting timeout="10"></ThresholdDecaySetting>
-	<MatchSizeDecaySetting type="0" maxmatchsize="12" default="false"></MatchSizeDecaySetting>
-	<ValuePair seconds="10" threshold="10"></ValuePair>
-	<LonelinessReductionMultiplier seconds="10" multiplier="1.0" maxapplications="1"></LonelinessReductionMultiplier>
-</ValuePair>
+<SimpleFilter name="TEST_S">
+	<PossibleValue default="true">0</PossibleValue>
+	<PossibleValue default="false">1</PossibleValue>
+</SimpleFilter>
+<AdvancedFilter name="TEST_A" weight="0" excludeFromMultipliers="false">
+	<PossibleValue default="false">0</PossibleValue>
+	<PossibleValue default="true">1</PossibleValue>
+</AdvancedFilter>
+
+<ThresholdDecaySetting timeout="10" seconds="10" threshold="1.0">
+	<ValuePair seconds="1" threshold="1.0"/>
+</ThresholdDecaySetting>
+<MatchSizeDecaySetting type="1" maxmatchsize="8" default="true">
+	<ValuePair seconds="1" matchsize="1"/>
+</MatchSizeDecaySetting>
+<LonelinessReductionMultiplier seconds="10" multiplier="1" maxapplications="1"/>

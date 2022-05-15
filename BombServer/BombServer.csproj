@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\DataTypes\BombAttributeList.cs" />
+    <Compile Include="Src\DataTypes\BombGame.cs" />
     <Compile Include="Src\DataTypes\BombGameList.cs" />
     <Compile Include="Src\DataTypes\BombService.cs" />
     <Compile Include="Src\DataTypes\BombServiceList.cs" />

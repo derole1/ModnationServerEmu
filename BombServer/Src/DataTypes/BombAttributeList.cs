@@ -58,5 +58,15 @@ namespace BombServerEmu_MNR.Src.DataTypes
                 return ms.ToArray();
             }
         }
+
+        public override string ToString()
+        {
+            var str = "BombAttributeList:\n\n";
+            foreach (var attribute in this)
+            {
+                str += $"{attribute.Key}: {attribute.Value}\n";
+            }
+            return str;
+        }
     }
 }

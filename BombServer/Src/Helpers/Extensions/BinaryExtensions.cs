@@ -24,6 +24,11 @@ namespace BombServerEmu_MNR.Src.Helpers.Extensions
 
         public static void WriteStringMember(this EndiannessAwareBinaryWriter bw, object value, Encoding enc)
         {
+            if (value == null)
+            {
+                bw.Write(0);
+                return;
+            }
             var str = value.ToString();
             bw.Write(str.Length+1);
             bw.Write(enc.GetBytes(str));
