@@ -28,6 +28,8 @@ namespace BombServerEmu_MNR.Src.DataTypes
                 bw.WriteStringMember(Unk2);
                 bw.WriteStringMember(Unk3);
                 bw.WriteStringMember(Unk4);
+                bw.Write(new byte[255]);    //In later versions of the game, it crashes if I dont put this padding, maybe they added fields to the header in an update?
+                                            //TODO: Analyse eboot of latest game version
                 bw.Flush();
                 return ms.ToArray();
             }
@@ -40,6 +42,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             {
                 foreach (var game in this)
                     bw.Write(game.ToArray());
+                bw.Write(new byte[255]);
                 bw.Flush();
                 return ms.ToArray();
             }

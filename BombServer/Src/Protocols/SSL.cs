@@ -14,39 +14,39 @@ using BombServerEmu_MNR.Src.DataTypes;
 
 namespace BombServerEmu_MNR.Src.Protocols
 {
-    class SSL
+    class SSL : IProtocol
     {
-        X509Certificate2 cert;
+        public X509Certificate2 Cert { get; private set; }
 
-        BombService service;
-        TcpListener listener;
+        public BombService Service { get; }
+        public TcpListener Listener { get; }
 
         bool UseSsl { get; }
 
         public SSL(BombService service, string ip, ushort port, bool useSsl = true)
         {
-            this.service = service;
-            this.UseSsl = useSsl;
-            listener = new TcpListener(IPAddress.Parse(ip), port);
+            Service = service;
+            UseSsl = useSsl;
+            Listener = new TcpListener(IPAddress.Parse(ip), port);
         }
 
         public void SetCert(string certPath, string certPass)
         {
-            cert = new X509Certificate2(certPath, certPass);
-            Logging.Log(typeof(SSL), "Updated cert for {0}! Using {1}", LogType.Debug, service.Name, certPath);
+            Cert = new X509Certificate2(certPath, certPass);
+            Logging.Log(typeof(SSL), "Updated cert for {0}! Using {1}", LogType.Debug, Service.Name, certPath);
         }
 
         public void Start()
         {
-            listener.Start();
+            Listener.Start();
         }
 
-        public SSLClient GetClient()
+        public IClient GetClient()
         {
-            var client = listener.AcceptTcpClient();
+            var client = Listener.AcceptTcpClient();
             var ipEp = (IPEndPoint)client.Client.RemoteEndPoint;
             Logging.Log(typeof(SSL), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
-            return new SSLClient(service, client, UseSsl ? cert : null);
+            return new SSLClient(Service, client, UseSsl ? Cert : null);
         }
     }
 }

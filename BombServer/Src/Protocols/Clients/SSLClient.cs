@@ -19,7 +19,7 @@ using BombServerEmu_MNR.Src.Helpers.Extensions;
 
 namespace BombServerEmu_MNR.Src.Protocols.Clients
 {
-    class SSLClient
+    class SSLClient : IClient
     {
         public enum EBombPacketType : byte
         {
@@ -30,12 +30,17 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Reset = 0x60    //This seems to mainly be used in RUDP protocol
         }
 
-        public bool hasDirectConnection = false;
+        public bool IsConnected
+        {
+            get { return Client.Connected && stream.CanRead && stream.CanWrite; }
+        }
+        public bool HasDirectConnection { get; set; }
+        public IPEndPoint RemoteEndPoint { get; }
 
-        BombService service;
+        public BombService Service { get; }
 
-        public TcpClient client;
-        X509Certificate2 cert;
+        public TcpClient Client { get; }
+        public X509Certificate2 Cert { get; }
 
         UniversalNetworkStream stream;
 
@@ -43,9 +48,9 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public SSLClient(BombService service, TcpClient client, X509Certificate2 cert = null)
         {
-            this.service = service;
-            this.client = client;
-            this.cert = cert;
+            Service = service;
+            Client = client;
+            Cert = cert;
             //SetKeepAlive(5000);
             if (cert == null)
             {
@@ -53,6 +58,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
                 return;
             }
             Logging.Log(typeof(SSLClient), "Attempting to get SSLStream...", LogType.Debug);
+            RemoteEndPoint = (IPEndPoint)client.Client.RemoteEndPoint;
             var sslStream = new FixedSslStream(client.GetStream(), false);
             sslStream.AuthenticateAsServer(cert, false, SslProtocols.Ssl2 | SslProtocols.Ssl3 | SslProtocols.Tls, false);
             stream = new UniversalNetworkStream(sslStream);
@@ -67,7 +73,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public BombXml GetXmlData()
         {
-            return new BombXml(service, Encoding.ASCII.GetString(ReadSocket()));
+            return new BombXml(Service, Encoding.ASCII.GetString(ReadSocket()));
         }
 
         public void SendXmlData(BombXml xml)
@@ -85,7 +91,7 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             WriteSocket(data, EBombPacketType.Data);
         }
 
-        public void SendRawData(BinaryWriter bw)
+        public void SendRawData(EndiannessAwareBinaryWriter bw)
         {
             WriteSocket(((MemoryStream)bw.BaseStream).ToArray(), EBombPacketType.Data);
         }
@@ -101,17 +107,12 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             WriteSocket(new byte[0], EBombPacketType.Reset);
         }
 
-        public bool HasConnection()
-        {
-            return client.Connected && stream.CanRead && stream.CanWrite;
-        }
-
         public void Close()
         {
             if (keepAlive != null)
                 keepAlive.Dispose();
             stream.Close();
-            client.Close();
+            Client.Close();
         }
 
         ~SSLClient()

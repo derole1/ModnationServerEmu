@@ -18,7 +18,7 @@ namespace BombServerEmu_MNR.Src.Services
         {
             Service = new BombService("gamemanager", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
             Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
-            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
+            Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandlerDEBUG);
 
             Service.RegisterMethod("logClientMessage", null);
             Service.RegisterMethod("registerSessionKeyWithTargetBombd", null);
@@ -36,14 +36,14 @@ namespace BombServerEmu_MNR.Src.Services
             Service.RegisterMethod("kickPlayer", null);
         }
 
-        void CreateGameHandler(BombService service, SSLClient client, BombXml xml)
+        void CreateGameHandler(BombService service, IClient client, BombXml xml)
         {
             //gamename,internalIP,externalIP,listenPort
             //xml.SetMethod("createGame");
             //client.SendXmlData(xml);
         }
 
-        void LeaveCurrentGameHandler(BombService service, SSLClient client, BombXml xml)
+        void LeaveCurrentGameHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetMethod("leaveCurrentGame");
             client.SendXmlData(xml);

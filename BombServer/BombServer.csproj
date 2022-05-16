@@ -64,12 +64,15 @@
     <Compile Include="Src\Log\Logging.cs" />
     <Compile Include="Src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\Protocols\Clients\IClient.cs" />
     <Compile Include="Src\Protocols\Clients\RUDPClient.cs" />
     <Compile Include="Src\Protocols\Clients\SSLClient.cs" />
+    <Compile Include="Src\Protocols\IProtocol.cs" />
     <Compile Include="Src\Protocols\RUDP.cs" />
     <Compile Include="Src\Protocols\SSL.cs" />
     <Compile Include="Src\Services\Connect.cs" />
     <Compile Include="Src\Services\Directory.cs" />
+    <Compile Include="Src\Services\GameServer.cs" />
     <Compile Include="Src\Services\Login.cs" />
     <Compile Include="Src\Services\Stats.cs" />
     <Compile Include="Src\Services\PlayGroup.cs" />

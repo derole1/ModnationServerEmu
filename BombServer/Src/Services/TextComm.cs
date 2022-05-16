@@ -27,27 +27,27 @@ namespace BombServerEmu_MNR.Src.Services
             Service.RegisterMethod("TextMessage", CreateGroupHandler);
         }
 
-        void CreateGroupHandler(BombService service, SSLClient client, BombXml xml)
+        void CreateGroupHandler(BombService service, IClient client, BombXml xml)
         {
             client.SendXmlData(xml);
         }
 
-        void JoinGroupHandler(BombService service, SSLClient client, BombXml xml)
+        void JoinGroupHandler(BombService service, IClient client, BombXml xml)
         {
             client.SendXmlData(xml);
         }
 
-        void LeaveGroupHandler(BombService service, SSLClient client, BombXml xml)
+        void LeaveGroupHandler(BombService service, IClient client, BombXml xml)
         {
             client.SendXmlData(xml);
         }
 
-        void InviteUserToGroupHandler(BombService service, SSLClient client, BombXml xml)
+        void InviteUserToGroupHandler(BombService service, IClient client, BombXml xml)
         {
             client.SendXmlData(xml);
         }
 
-        void TextMessageHandler(BombService service, SSLClient client, BombXml xml)
+        void TextMessageHandler(BombService service, IClient client, BombXml xml)
         {
             client.SendXmlData(xml);
         }

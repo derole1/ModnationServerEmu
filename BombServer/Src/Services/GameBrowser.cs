@@ -27,7 +27,7 @@ namespace BombServerEmu_MNR.Src.Services
             Service.RegisterMethod("listFakeGames", null);
         }
 
-        void ListGamesHandler(BombService service, SSLClient client, BombXml xml)
+        void ListGamesHandler(BombService service, IClient client, BombXml xml)
         {
             var attributes = new BombAttributeList(Convert.FromBase64String(xml.GetParam("attributes")));
             Logging.Log(typeof(GameBrowser), "{0}", LogType.Debug, attributes);
@@ -37,26 +37,26 @@ namespace BombServerEmu_MNR.Src.Services
             var gameList = new BombGameList
             {
                 Unk1 = 0,
-                Unk2 = "test_game",
-                Unk3 = "test_game",
-                Unk4 = "test_game"
+                Unk2 = "",
+                Unk3 = "",
+                Unk4 = ""
             };
-            var game = new BombGame
-            {
-                GameName = "test_game",
-                Unk1 = "TEST"
-            };
-            game.AdvancedFilters.Add("__IS_RANKED", "0");
-            game.AdvancedFilters.Add("__JOIN_MODE", "OPEN");
-            game.AdvancedFilters.Add("__MM_MODE_G", "OPEN");
-            gameList.Add(game);
+            //var game = new BombGame
+            //{
+            //    GameName = "test_game",
+            //    Unk1 = "TEST"
+            //};
+            //game.AdvancedFilters.Add("__IS_RANKED", "0");
+            //game.AdvancedFilters.Add("__JOIN_MODE", "OPEN");
+            //game.AdvancedFilters.Add("__MM_MODE_G", "OPEN");
+            //gameList.Add(game);
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(gameList.SerializeHeader()));
             xml.AddParam("serverGameList", Convert.ToBase64String(gameList.SerializeList()));
             xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));
             client.SendXmlData(xml);
         }
 
-        void UnSubscribeGameEventsHandler(BombService service, SSLClient client, BombXml xml)
+        void UnSubscribeGameEventsHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetMethod("unSubscribeGameEvents");
             //TODO: Unsubscribe from game events

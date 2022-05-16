@@ -16,7 +16,7 @@ namespace BombServerEmu_MNR.Src.Services
 {
     class Connect
     {
-        public static void StartConnectHandler(BombService service, SSLClient client, BombXml xml)
+        public static void StartConnectHandler(BombService service, IClient client, BombXml xml)
         {
             var ticket = new NPTicket(xml.GetParam("NPTicket"));
 
@@ -51,21 +51,21 @@ namespace BombServerEmu_MNR.Src.Services
             client.SendXmlData(xml);
         }
 
-        public static void TimeSyncRequestHandler(BombService service, SSLClient client, BombXml xml)
+        public static void TimeSyncRequestHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetName("connect");
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
-            client.hasDirectConnection = service.IsDirectConnect;
+            client.HasDirectConnection = service.IsDirectConnect;
             client.SendXmlData(xml);
         }
 
-        public static void TimeSyncRequestHandlerDEBUG(BombService service, SSLClient client, BombXml xml)
+        public static void TimeSyncRequestHandlerDEBUG(BombService service, IClient client, BombXml xml)
         {
             xml.SetName("connect");
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
-            client.hasDirectConnection = service.IsDirectConnect;
+            client.HasDirectConnection = service.IsDirectConnect;
             client.SendXmlData(xml);
             //xml.SetName("gamemanager");
             //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
@@ -76,7 +76,7 @@ namespace BombServerEmu_MNR.Src.Services
             //xml.AddParam("numplayerslist", "1");
             //xml.AddParam("playerlist", Convert.ToBase64String(new byte[255]));
             //xml.AddParam("attributes", Convert.ToBase64String(new byte[255]));
-            var ipEndPoint = (System.Net.IPEndPoint)client.client.Client.RemoteEndPoint;
+            var ipEndPoint = (System.Net.IPEndPoint)client.RemoteEndPoint;
             xml.SetName("gamemanager");
             xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             xml.SetMethod("updateP2PInfo");
@@ -101,6 +101,15 @@ namespace BombServerEmu_MNR.Src.Services
             //bw.Flush();
             //xml.AddParam("attributes", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
             //client.SendXmlData(xml);
+            System.Threading.Thread.Sleep(5000);
+            xml.SetName("gamemanager");
+            xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
+            xml.SetMethod("requestDirectHostConnection");
+            xml.AddParam("listenIP", "192.168.1.46");
+            xml.AddParam("listenPort", "1234");
+            xml.AddParam("hashSalt", "0");
+            xml.AddParam("sessionId", "1");
+            client.SendXmlData(xml);
         }
     }
 }

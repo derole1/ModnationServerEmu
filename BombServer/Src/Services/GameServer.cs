@@ -12,13 +12,14 @@ using BombServerEmu_MNR.Src.Helpers.Extensions;
 
 namespace BombServerEmu_MNR.Src.Services
 {
-    class Stats
+    //Im not so sure the game uses P2P, as a just in case
+    class GameServer
     {
         public BombService Service { get; }
 
-        public Stats(string ip, ushort port)
+        public GameServer(string ip, ushort port)
         {
-            Service = new BombService("stats", ProtocolType.RUDP, true, ip, port);
+            Service = new BombService("gameserver", ProtocolType.RUDP, true, ip, port);
             Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
             Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 

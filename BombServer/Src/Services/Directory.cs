@@ -24,7 +24,7 @@ namespace BombServerEmu_MNR.Src.Services
             Service.RegisterMethod("getServiceList", GetServiceListHandler);
         }
 
-        void GetServiceListHandler(BombService service, SSLClient client, BombXml xml)
+        void GetServiceListHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetMethod("getServiceList");
             xml.AddParam("servicesList", Convert.ToBase64String(new BombServiceList(Program.Services).ToArray()));

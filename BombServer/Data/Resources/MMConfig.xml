@@ -1,23 +1,7 @@
-<SimpleFilter name="__IS_RANKED">
-	<PossibleValue default="true">0</PossibleValue>
-	<PossibleValue default="false">1</PossibleValue>
-</SimpleFilter>
-<SimpleFilter name="__JOIN_MODE">
-	<PossibleValue default="false">CLOSED</PossibleValue>
-	<PossibleValue default="true">OPEN</PossibleValue>
-</SimpleFilter>
-<SimpleFilter name="__MM_MODE_G">
-	<PossibleValue default="false">CLOSED</PossibleValue>
-	<PossibleValue default="true">OPEN</PossibleValue>
-</SimpleFilter>
-
-<ThresholdDecaySetting timeout="4" seconds="1" threshold="1.0">
+<ThresholdDecaySetting timeout="4" seconds="10" threshold="1.0">
 	<ValuePair seconds="0" threshold="1.0"/>
 </ThresholdDecaySetting>
-<MatchSizeDecaySetting type="0" maxmatchsize="8" default="true">
-	<ValuePair seconds="0" matchsize="0"/>
-</MatchSizeDecaySetting>
-<MatchSizeDecaySetting type="1" maxmatchsize="8" default="false">
+<MatchSizeDecaySetting type="1" maxmatchsize="8" default="true">
 	<ValuePair seconds="0" matchsize="0"/>
 </MatchSizeDecaySetting>
 <LonelinessReductionMultiplier seconds="10" multiplier="1" maxapplications="1"/>
