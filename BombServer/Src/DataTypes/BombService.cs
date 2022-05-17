@@ -103,7 +103,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
                     }
                     else
                     {
-                        var xml = client.GetXmlData();
+                        var xml = client.GetNetcodeData();
                         string method = xml.GetMethod();
                         if (!methods.ContainsKey(method) || methods[method] == null)
                         {

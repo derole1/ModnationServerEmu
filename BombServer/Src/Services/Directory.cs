@@ -29,7 +29,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("getServiceList");
             xml.AddParam("servicesList", Convert.ToBase64String(new BombServiceList(Program.Services).ToArray()));
             xml.AddParam("ClusterUUID", Program.ClusterUuid);
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
     }
 }

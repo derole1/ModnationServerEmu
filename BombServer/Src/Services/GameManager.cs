@@ -40,13 +40,13 @@ namespace BombServerEmu_MNR.Src.Services
         {
             //gamename,internalIP,externalIP,listenPort
             //xml.SetMethod("createGame");
-            //client.SendXmlData(xml);
+            //client.SendNetcodeData(xml);
         }
 
         void LeaveCurrentGameHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetMethod("leaveCurrentGame");
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
     }
 }

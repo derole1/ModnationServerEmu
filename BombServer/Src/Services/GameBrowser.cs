@@ -53,14 +53,14 @@ namespace BombServerEmu_MNR.Src.Services
             xml.AddParam("serverGameListHeader", Convert.ToBase64String(gameList.SerializeHeader()));
             xml.AddParam("serverGameList", Convert.ToBase64String(gameList.SerializeList()));
             xml.AddParam("gameListTimeOfDeath", Math.Floor((DateTime.UtcNow.AddHours(1) - new DateTime(1970, 1, 1)).TotalSeconds));
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
 
         void UnSubscribeGameEventsHandler(BombService service, IClient client, BombXml xml)
         {
             xml.SetMethod("unSubscribeGameEvents");
             //TODO: Unsubscribe from game events
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
     }
 }

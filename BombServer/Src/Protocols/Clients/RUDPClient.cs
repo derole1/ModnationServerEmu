@@ -17,15 +17,6 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 {
     class RUDPClient : IClient
     {
-        public enum EBombPacketType : byte
-        {
-            KeepAlive = 0x61,
-            Data = 0x64,
-            Unk1 = 0x66,    //Unk1 and Unk2 exist in the switch statement, but seem to be unimplemented
-            Unk2 = 0x65,
-            Reset = 0x60    //This seems to mainly be used in RUDP protocol
-        }
-
         public bool IsConnected
         {
             get { return true; }    //TODO: Get connection state
@@ -37,6 +28,8 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
 
         public UdpClient Client { get; }
 
+        EBombPacketType lastPacketType;
+
         Timer keepAlive;
 
         public RUDPClient(BombService service, UdpClient listener)
@@ -44,7 +37,9 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Service = service;
             Client = listener;
             RemoteEndPoint = (IPEndPoint)Client.Client.RemoteEndPoint;
-            Logging.Log(typeof(RUDPClient), "Unimplemented!", LogType.Error);
+            //Perform an acknowledge and sync to get the client to send its data
+            SendAcknowledge();
+            SendSync();
         }
 
         public void SetKeepAlive(int interval)
@@ -53,14 +48,14 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Logging.Log(typeof(RUDPClient), "Updated KeepAlive interval to {0}ms", LogType.Debug, interval);
         }
 
-        public BombXml GetXmlData()
+        public BombXml GetNetcodeData()
         {
             return new BombXml(Service, Encoding.ASCII.GetString(ReadSocket()));
         }
 
-        public void SendXmlData(BombXml xml)
+        public void SendNetcodeData(BombXml xml)
         {
-            WriteSocket(Encoding.ASCII.GetBytes(xml.GetResDoc()), EBombPacketType.Data);
+            WriteSocket(Encoding.ASCII.GetBytes(xml.GetResDoc()), EBombPacketType.NetcodeData);
         }
 
         public byte[] GetRawData()
@@ -68,14 +63,14 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             return ReadSocket();
         }
 
-        public void SendRawData(byte[] data)
+        public void SendReliableGameData(EndiannessAwareBinaryWriter bw)
         {
-            WriteSocket(data, EBombPacketType.Data);
+            WriteSocket(((MemoryStream)bw.BaseStream).ToArray(), EBombPacketType.ReliableGameData);
         }
 
-        public void SendRawData(EndiannessAwareBinaryWriter bw)
+        public void SendUnreliableGameData(EndiannessAwareBinaryWriter bw)
         {
-            WriteSocket(((MemoryStream)bw.BaseStream).ToArray(), EBombPacketType.Data);
+            WriteSocket(((MemoryStream)bw.BaseStream).ToArray(), EBombPacketType.UnreliableGameData);
         }
 
         public void SendKeepAlive()
@@ -87,6 +82,16 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
         public void SendReset()
         {
             WriteSocket(new byte[0], EBombPacketType.Reset);
+        }
+
+        public void SendAcknowledge()
+        {
+            WriteSocket(new byte[0], EBombPacketType.Acknowledge);
+        }
+
+        public void SendSync()
+        {
+            WriteSocket(new byte[0], EBombPacketType.Sync);
         }
 
         public void Close()
@@ -102,14 +107,41 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
             Close();
         }
 
-        int x = 0;
         byte[] ReadSocket()
         {
-            Logging.Log(typeof(RUDPClient), "ReadSocket: Unimplemented!", LogType.Error);
+            var ep = new IPEndPoint(IPAddress.None, 0);
+            using (var ms = new MemoryStream(Client.Receive(ref ep)))
+            using (var br = new EndiannessAwareBinaryReader(ms, EEndianness.Big))
+            {
+                var packetType = (EBombPacketType)br.ReadByte();
+                switch (packetType)
+                {
+                    case EBombPacketType.KeepAlive:
+                        // TODO: Extend a KeepAlive timer
+                        WriteSocket(new byte[0], EBombPacketType.Acknowledge);
+                        break;
+                    case EBombPacketType.NetcodeData:
+                        Logging.Log(typeof(RUDPClient), "ReadSocket::NetcodeData: Unimplemented!", LogType.Error);
+                        WriteSocket(new byte[0], EBombPacketType.Acknowledge);
+                        break;
+                    case EBombPacketType.ReliableGameData:
+                        Logging.Log(typeof(RUDPClient), "ReadSocket::ReliableGameData: Unimplemented!", LogType.Error);
+                        WriteSocket(new byte[0], EBombPacketType.Acknowledge);
+                        break;
+                    case EBombPacketType.UnreliableGameData:
+                        Logging.Log(typeof(RUDPClient), "ReadSocket::UnreliableGameData: Unimplemented!", LogType.Error);
+                        break;
+                    case EBombPacketType.Finish: //Never used
+                    case EBombPacketType.Reset:  //??? how to handle this? Its never used though
+                    case EBombPacketType.Sync:
+                        WriteSocket(new byte[0], EBombPacketType.Acknowledge);
+                        break;
+                }
+                lastPacketType = packetType;
+            }
             return null;
         }
 
-        int i = 0;
         void WriteSocket(byte[] data, EBombPacketType packetType)
         {
             Logging.Log(typeof(RUDPClient), "WriteSocket: Unimplemented!", LogType.Error);

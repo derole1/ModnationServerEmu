@@ -22,24 +22,25 @@ namespace BombServerEmu_MNR.Src.Protocols
         public RUDP(BombService service, string ip, ushort port)
         {
             Listener = new UdpClient(ip, port);
-            Logging.Log(typeof(RUDP), "Unimplemented!", LogType.Error);
         }
 
         public void SetCert(string certPath, string certPass) => Logging.Log(typeof(RUDP), "Cannot set cert for RUDP protocol!", LogType.Warning);
 
-        public void Start()
-        {
-            Logging.Log(typeof(RUDP), "Start: Unimplemented!", LogType.Error);
-        }
+        public void Start() { }
 
         public IClient GetClient()
         {
-            //Infinitely block for now
+            var ipEp = new IPEndPoint(IPAddress.None, 0);
             while (true)
-                System.Threading.Thread.Sleep(1000);
-            //var ipEp = (IPEndPoint)client.Client.RemoteEndPoint;
-            //Logging.Log(typeof(SSL), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
-            return new RUDPClient(Service, Listener);
+            {
+                var data = Listener.Receive(ref ipEp);
+                if ((EBombPacketType)data[0] == EBombPacketType.Sync)
+                {
+                    Listener.Connect(ipEp); //UDP is connectionless, all this is doing is telling the .net library where to route responses to
+                    Logging.Log(typeof(RUDP), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
+                    return new RUDPClient(Service, Listener);
+                }
+            }
         }
     }
 }

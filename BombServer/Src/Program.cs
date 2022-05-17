@@ -40,6 +40,9 @@ namespace BombServerEmu_MNR.Src
             Services.Add(new PlayGroup("192.168.1.196", 10514).Service);  //Made up port
             Services.Add(new Stats("192.168.1.196", 50002).Service);
 
+            // TEST
+            new GameServer("192.168.1.196", 1234);
+
             //Services.Add(new Directory("192.168.1.196", 11501).Service);
 
             //Services.Add(new Matchmaking("192.168.1.196", 11510).Service);

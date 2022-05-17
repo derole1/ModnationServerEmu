@@ -48,7 +48,7 @@ namespace BombServerEmu_MNR.Src.Services
                 //xml.AddParam("MMConfigFile", Convert.ToBase64String(new byte[1024]));
                 //xml.AddParam("MMConfigFileSize", "1024");
             }
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
 
         public static void TimeSyncRequestHandler(BombService service, IClient client, BombXml xml)
@@ -57,7 +57,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
             client.HasDirectConnection = service.IsDirectConnect;
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
 
         public static void TimeSyncRequestHandlerDEBUG(BombService service, IClient client, BombXml xml)
@@ -66,7 +66,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetMethod("timeSyncRequest");
             xml.AddParam("serverTime", Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds));
             client.HasDirectConnection = service.IsDirectConnect;
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
             //xml.SetName("gamemanager");
             //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             //xml.SetMethod("joinGameCompleted");
@@ -85,7 +85,7 @@ namespace BombServerEmu_MNR.Src.Services
             xml.AddParam("p2pPort", "1234");
             xml.AddParam("p2pAddrPrivate", BinaryExtensions.SerializeIPAddress(ipEndPoint.Address));
             xml.AddParam("p2pPortPrivate", "1234");
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
             //xml.SetName("gamemanager");
             //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             //xml.SetMethod("joinGameCompleted");
@@ -100,16 +100,16 @@ namespace BombServerEmu_MNR.Src.Services
             //bw.Write(new byte[255]);
             //bw.Flush();
             //xml.AddParam("attributes", Convert.ToBase64String(((MemoryStream)bw.BaseStream).ToArray()));
-            //client.SendXmlData(xml);
+            //client.SendNetcodeData(xml);
             System.Threading.Thread.Sleep(5000);
             xml.SetName("gamemanager");
             xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             xml.SetMethod("requestDirectHostConnection");
-            xml.AddParam("listenIP", "192.168.1.46");
+            xml.AddParam("listenIP", "192.168.1.196");
             xml.AddParam("listenPort", "1234");
             xml.AddParam("hashSalt", "0");
             xml.AddParam("sessionId", "1");
-            client.SendXmlData(xml);
+            client.SendNetcodeData(xml);
         }
     }
 }
