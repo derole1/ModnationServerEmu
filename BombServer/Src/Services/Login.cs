@@ -17,7 +17,7 @@ namespace BombServerEmu_MNR.Src.Services
 
         public Login(string ip, ushort port)
         {
-            Service = new BombService("login", ProtocolType.TCP, false, ip, port, "output.pfx", "1234");
+            Service = new BombService("login", EProtocolType.TCP, false, ip, port, "output.pfx", "1234");
             Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
             Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
         }

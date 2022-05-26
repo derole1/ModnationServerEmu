@@ -21,12 +21,9 @@ namespace BombServerEmu_MNR.Src.Protocols
         public BombService Service { get; }
         public TcpListener Listener { get; }
 
-        bool UseSsl { get; }
-
-        public SSL(BombService service, string ip, ushort port, bool useSsl = true)
+        public SSL(BombService service, string ip, ushort port)
         {
             Service = service;
-            UseSsl = useSsl;
             Listener = new TcpListener(IPAddress.Parse(ip), port);
         }
 
@@ -46,7 +43,7 @@ namespace BombServerEmu_MNR.Src.Protocols
             var client = Listener.AcceptTcpClient();
             var ipEp = (IPEndPoint)client.Client.RemoteEndPoint;
             Logging.Log(typeof(SSL), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
-            return new SSLClient(Service, client, UseSsl ? Cert : null);
+            return new SSLClient(Service, client, Cert);
         }
     }
 }

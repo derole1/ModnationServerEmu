@@ -30,6 +30,12 @@ namespace BombServerEmu_MNR.Src.Protocols.Clients
     // You get the idea, its similar to TCP but with the flexibility and performance of UDP when its required
     // 
     // PS: Assuming 0x67 is FIN, a completely wild guess, but I dont know what else it could be
+    // 
+    // All RUDP communication is signed (apart from a few packets). All packets that ARE signed use the HMAC-MD5 algorithm
+    // with a salt (that I believe is appended to the key data somehow). The resulting MD5 hash is then reduced to 16 bits
+    // using some bit shifting algorithm. NOTE that NetcodeData packets use this same algorithm, but 32 bits instead of 16.
+    // 
+    // Signatures are stored in different locations depending on the packet type, all packet types have different header layouts.
 
     public enum EBombPacketType : byte
     {

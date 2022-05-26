@@ -53,6 +53,7 @@
     <Compile Include="Src\DataTypes\BombServiceList.cs" />
     <Compile Include="Src\DataTypes\BombXml.cs" />
     <Compile Include="Src\DataTypes\NPTicket.cs" />
+    <Compile Include="Src\Helpers\BombHMAC.cs" />
     <Compile Include="Src\Helpers\Extensions\BinaryExtensions.cs" />
     <Compile Include="Src\Helpers\Extensions\Endian.cs" />
     <Compile Include="Src\Helpers\EndiannessAwareBinaryReader.cs" />

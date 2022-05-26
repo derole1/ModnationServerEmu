@@ -77,15 +77,15 @@ namespace BombServerEmu_MNR.Src.Services
             //xml.AddParam("playerlist", Convert.ToBase64String(new byte[255]));
             //xml.AddParam("attributes", Convert.ToBase64String(new byte[255]));
             var ipEndPoint = (System.Net.IPEndPoint)client.RemoteEndPoint;
-            xml.SetName("gamemanager");
-            xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
-            xml.SetMethod("updateP2PInfo");
-            xml.AddParam("playername", "Jonopiel");
-            xml.AddParam("p2pAddr", BinaryExtensions.SerializeIPAddress(ipEndPoint.Address));
-            xml.AddParam("p2pPort", "1234");
-            xml.AddParam("p2pAddrPrivate", BinaryExtensions.SerializeIPAddress(ipEndPoint.Address));
-            xml.AddParam("p2pPortPrivate", "1234");
-            client.SendNetcodeData(xml);
+            //xml.SetName("gamemanager");
+            //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
+            //xml.SetMethod("updateP2PInfo");
+            //xml.AddParam("playername", "Jonopiel");
+            //xml.AddParam("p2pAddr", BinaryExtensions.SerializeIPAddress(ipEndPoint.Address));
+            //xml.AddParam("p2pPort", "1234");
+            //xml.AddParam("p2pAddrPrivate", BinaryExtensions.SerializeIPAddress(ipEndPoint.Address));
+            //xml.AddParam("p2pPortPrivate", "1234");
+            //client.SendNetcodeData(xml);
             //xml.SetName("gamemanager");
             //xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             //xml.SetMethod("joinGameCompleted");
@@ -106,8 +106,8 @@ namespace BombServerEmu_MNR.Src.Services
             xml.SetTransactionType(BombXml.TRANSACTION_TYPE_REQUEST);
             xml.SetMethod("requestDirectHostConnection");
             xml.AddParam("listenIP", "192.168.1.196");
-            xml.AddParam("listenPort", "1234");
-            xml.AddParam("hashSalt", "0");
+            xml.AddParam("listenPort", "50002");
+            xml.AddParam("hashSalt", "");
             xml.AddParam("sessionId", "1");
             client.SendNetcodeData(xml);
         }

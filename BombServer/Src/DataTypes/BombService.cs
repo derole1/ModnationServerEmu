@@ -12,7 +12,7 @@ using BombServerEmu_MNR.Src.Helpers;
 
 namespace BombServerEmu_MNR.Src.DataTypes
 {
-    public enum ProtocolType
+    public enum EProtocolType
     {
         TCP = 0,
         RUDP = 1
@@ -23,7 +23,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
         const int KEEP_ALIVE_INVERVAL = 10000;
 
         public string Name { get; }
-        public ProtocolType Protocol { get; }
+        public EProtocolType Protocol { get; }
         public bool IsDirectConnect { get; }
         public string IP { get; }
         public ushort Port { get; }
@@ -35,7 +35,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
         Action<IClient, EndiannessAwareBinaryReader, EndiannessAwareBinaryWriter> directMethod;
         EEndianness directMethodEndianness;
 
-        public BombService(string name, ProtocolType protocol, bool isDirectConnect, string ip, ushort port, string cert = null, string pass = "")
+        public BombService(string name, EProtocolType protocol, bool isDirectConnect, string ip, ushort port, string cert = null, string pass = "")
         {
             Name = name;
             Protocol = protocol;
@@ -43,7 +43,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             IP = ip;
             Port = port;
             Uuid = UUID.GenerateUUID();
-            if (protocol == ProtocolType.TCP) {
+            if (protocol == EProtocolType.TCP) {
                 Listener = new SSL(this, ip, port);
                 Listener.SetCert(string.Format(@"Data\Certs\{0}", cert), pass);
             } else {
@@ -52,7 +52,7 @@ namespace BombServerEmu_MNR.Src.DataTypes
             Listener.Start();
             var thread = new Thread(() => ListenThread(Listener));
             thread.Start();
-            Logging.Log(typeof(BombService), "Started service {0} with protocol {1} at {2}:{3}", LogType.Info, name, Enum.GetName(typeof(ProtocolType), protocol), ip, port);
+            Logging.Log(typeof(BombService), "Started service {0} with protocol {1} at {2}:{3}", LogType.Info, name, Enum.GetName(typeof(EProtocolType), protocol), ip, port);
         }
 
         public void RegisterMethod(string method, Action<BombService, IClient, BombXml> function)

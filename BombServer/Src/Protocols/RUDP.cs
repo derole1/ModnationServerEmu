@@ -19,10 +19,10 @@ namespace BombServerEmu_MNR.Src.Protocols
         public BombService Service { get; }
         public UdpClient Listener { get; }
 
-        public RUDP(BombService service, string ip, ushort port)
-        {
-            Listener = new UdpClient(ip, port);
-        }
+        public Dictionary<IPEndPoint, RUDPClient> Connections { get; } = new Dictionary<IPEndPoint, RUDPClient>();
+
+        public RUDP(BombService service, string ip, ushort port) => Listener = new UdpClient(ip, port);
+        public RUDP(BombService service, ushort port) => Listener = new UdpClient(port);
 
         public void SetCert(string certPath, string certPass) => Logging.Log(typeof(RUDP), "Cannot set cert for RUDP protocol!", LogType.Warning);
 
@@ -34,12 +34,18 @@ namespace BombServerEmu_MNR.Src.Protocols
             while (true)
             {
                 var data = Listener.Receive(ref ipEp);
-                if ((EBombPacketType)data[0] == EBombPacketType.Sync)
+                if (!Connections.ContainsKey(ipEp))
                 {
-                    Listener.Connect(ipEp); //UDP is connectionless, all this is doing is telling the .net library where to route responses to
-                    Logging.Log(typeof(RUDP), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
-                    return new RUDPClient(Service, Listener);
+                    if ((EBombPacketType)data[0] == EBombPacketType.Sync)
+                    {
+                        var client = new RUDPClient(Service, Listener, ipEp);
+                        Connections.Add(ipEp, client);
+                        Logging.Log(typeof(RUDP), "Connection from {0}:{1}", LogType.Info, ipEp.Address, ipEp.Port);
+                        return client;
+                    }
                 }
+                else
+                    Connections[ipEp].PacketQueue.Enqueue(data);
             }
         }
     }

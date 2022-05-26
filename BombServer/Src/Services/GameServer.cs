@@ -17,9 +17,9 @@ namespace BombServerEmu_MNR.Src.Services
     {
         public BombService Service { get; }
 
-        public GameServer(string ip, ushort port)
+        public GameServer(ushort port)
         {
-            Service = new BombService("gameserver", ProtocolType.RUDP, true, ip, port);
+            Service = new BombService("gameserver", EProtocolType.RUDP, true, null, port);
             Service.RegisterMethod("startConnect", Connect.StartConnectHandler);
             Service.RegisterMethod("timeSyncRequest", Connect.TimeSyncRequestHandler);
 
